@@ -180,18 +180,20 @@ app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
 Settings that can be changed:
 
 Property | Type | Default Value | Description
---- | --- | ---
-***ESMode*** | Enum (ESMode) | "requestContext.js" | Sets the version of JavaScript that will be generated.
-***ModelsFolder*** | String | "models" | The folder under the output directory that will contain the ES6 result modules.
-***SingleFileOutputName*** | String | "requestContext.js" | The file name of the generated ES5 JavaScript file containing all the request logic.
-***MultiFileOutput*** | bool | true | Indicates if all the generated code will be consolidated into a single file or be separated into multiple files.
-***OutputDirectory*** | String | "js" | The folder where the generated JavaScript code will saved in.
+---- | ---- | ---- | ---- |
+ESMode | Enum (ESMode) | "requestContext.js" | Sets the version of JavaScript that will be generated.
+ModelsFolder | String | "models" | The folder under the output directory that will contain the ES6 result modules.
+SingleFileOutputName | String | "requestContext.js" | The file name of the generated ES5 JavaScript file containing all the request logic.
+MultiFileOutput | bool | true | Indicates if all the generated code will be consolidated into a single file or be separated into multiple files.
+OutputDirectory | String | "js" | The folder where the generated JavaScript code will saved in.
 
 ---
 
 #### Swapping Code Generation Implementations
 
-Implementations used for code generations can be swapped out via the dependency container.
+Implementations used for code generations can be swapped out via the dependency container. All code building functionality can be swapped out.
+
+For more information on available modules, please see source code.
 
 For example, to swap out the docx comments in the generated files with XML comments:
 
@@ -207,3 +209,74 @@ From docx:
 
 To XML:
 
+```javascript
+//===============================================
+//<summary>Method to invoke request to api/Person/{personId}/{receiptId}. Method: GET.</summary>
+//<param>CodeBulder.JS.Types.JSNumber</param>
+//<typeparam>Number</typeparam>
+//<param>CodeBulder.JS.Types.JSNumber</param>
+//<typeparam>Number</typeparam>
+//<returns>PromiseLike<Receipt></returns>
+//===============================================
+```
+
+Simply make a class "JSXMLComment.cs" and place it in your project. Inherit it from JSRenderble and IComment:
+
+```csharp
+public class JSXMLComment : JSRenderble, IComment
+{
+    public bool? IsPublic { get; set; }
+    public JSType ReturnType { get; set; }
+    public IDictionary<string, JSType> Params { get; set; }
+    public JSType Type { get; set; }
+    public string Description { get; set; }
+    public JSXMLComment() {
+        Params = new Dictionary<string, JSType>();
+    }
+
+    public new String GetText()
+    {
+        var result = new StringBuilder();
+        result.AppendLine("//===============================================");
+        if (Description != null)
+        {
+            result.AppendLine($"//<summary>{Description}</summary>");
+        }
+        if (IsPublic.HasValue)
+        {
+            result.AppendLine(IsPublic.Value ? "//<access>Public</access>" : "</access>Private</access>");
+        }
+        if (Type != null)
+        {
+            result.AppendLine($"//<returns>{Type.JSTypeDef}</returns>");
+        }
+        foreach (var key in Params.Keys)
+        {
+            result.AppendLine($"//<param>{Params[key]}</param>");
+            result.AppendLine($"//<typeparam>{Params[key].JSTypeDef}</typeparam>");
+        }
+        if (ReturnType != null)
+        {
+            result.AppendLine($"//<returns>{ReturnType.JSTypeDef}</returns>");
+        }
+        result.Append("//===============================================");
+        return result.ToString();
+    }
+}
+```
+
+Now you can register the new code generation module in your Startup.cs:
+
+```csharp
+var jsCodeBuilder = new JSClassContainer<ControllerBase>();
+jsCodeBuilder.InstanceConfiguration.CreateComment = () => new JSXMLComment();
+app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
+```
+
+All generated code should now have XML instead of docx comments.
+
+### Licence
+This project is licensed under the MIT License
+
+### Author
+Philip Schoeman
