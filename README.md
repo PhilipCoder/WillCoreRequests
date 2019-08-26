@@ -17,6 +17,15 @@ If you have a .NET core WebAPI project and if you are tired of typing out AJAX r
     * Classes that are exported as ES6 modules are generated.
     * Uses FetchAPI under the hood.
 * With full IOC, the API can easily be extended or functionality can be changed. 
+
+###### Intellisense: Methods
+![alt text](TestWeb/images/MethodIntellisense.png "Logo Title Text 1")
+
+###### Intellisense: Result Properties
+![alt text](TestWeb/images/ResultIntellisens.png "Logo Title Text 1")
+
+---
+
 ## Supported Platforms
 WillCore.Requests is only tested with .Net Core 2.2.
 
