@@ -168,3 +168,42 @@ A file (requestContext.js) will be generated in the js folder of your solution. 
 ---
 
 ## Configuring Code Generation
+
+File generation configuration can be changed on the JSClassContainer.Configuration class. To access the class in the Startup.cs:
+
+```csharp
+var jsCodeBuilder = new JSClassContainer<ControllerBase>();
+jsCodeBuilder.Configuration.//Settings go here
+app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
+```
+
+Settings that can be changed:
+
+Property | Type | Default Value | Description
+--- | --- | ---
+***ESMode*** | Enum (ESMode) | "requestContext.js" | Sets the version of JavaScript that will be generated.
+***ModelsFolder*** | String | "models" | The folder under the output directory that will contain the ES6 result modules.
+***SingleFileOutputName*** | String | "requestContext.js" | The file name of the generated ES5 JavaScript file containing all the request logic.
+***MultiFileOutput*** | bool | true | Indicates if all the generated code will be consolidated into a single file or be separated into multiple files.
+***OutputDirectory*** | String | "js" | The folder where the generated JavaScript code will saved in.
+
+---
+
+#### Swapping Code Generation Implementations
+
+Implementations used for code generations can be swapped out via the dependency container.
+
+For example, to swap out the docx comments in the generated files with XML comments:
+
+From docx:
+```javascript
+/**
+* Method to invoke request to api/Person/{personId}/{receiptId}. Method: GET.
+* @param {Number} personId
+* @param {Number} receiptId
+* @return {PromiseLike<Receipt>}
+*/
+```
+
+To XML:
+

@@ -42,7 +42,7 @@ namespace CodeBulder.JS
         /// <summary>
         /// Public accessable reference to the static IOC container used to overide built in code generation operations.
         /// </summary>
-        public JSBuilderIOCContainer InstanceConfiguration { get; set; } = new JSBuilderIOCContainer();
+        public JSBuilderIOCContainer InstanceConfiguration { get; set; } = JSBuilderIOCContainer.Instance;
         public Configuration Configuration { get; set; } = Configuration.Instance;
         public JSClassContainer()
         {

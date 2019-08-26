@@ -50,7 +50,7 @@ namespace TestWeb
             }
             app.UseCors("all");
             var jsCodeBuilder = new JSClassContainer<ControllerBase>();
-            jsCodeBuilder.Configuration.ESMode = ESMode.ES5;
+            jsCodeBuilder.InstanceConfiguration.CreateComment = () => new JSXMLComment();
             app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
             app.UseHttpsRedirection();
             app.UseMvc();

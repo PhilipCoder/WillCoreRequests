@@ -10,8 +10,18 @@ namespace CodeBulder.JS
 {
     public class JSBuilderIOCContainer
     {
-        
-        public static JSBuilderIOCContainer Instance = new JSBuilderIOCContainer();
+        private static JSBuilderIOCContainer _instance { get; set; }
+        public static JSBuilderIOCContainer Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new JSBuilderIOCContainer();
+                }
+                return _instance;
+            }
+        }
         public Func<IJSClass> CreateJSClass { get; set; }
         public Func<ClassStructure, IJSClass> CreateJSClassFromStructure { get; set; }
         public Func<TypeStructure, IJSClass> CreateJSClassFromTypeStructure { get; set; }
