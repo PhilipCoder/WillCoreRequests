@@ -1,0 +1,1 @@
+﻿import {<< import[types] >>} from "<< import[url] >>";
