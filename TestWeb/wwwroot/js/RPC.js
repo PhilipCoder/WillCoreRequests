@@ -1,9 +1,16 @@
+import {request, globalTokens} from "./request/request.js";
+import {Person} from "./models/Person.js";
+import {Receipt} from "./models/Receipt.js";
 
 /**
-* Creates Instance Of RPCContext.
-* @param {String} baseURL
+* RPCContext. Used to make requests to the RPC controller.
 */
-function RPCRequestContainer (baseUrl){
+class RPCRequestContainer {
+    /**
+    * Creates Instance Of RPCContext.
+    * @param {String} baseURL
+    */
+    constructor(baseUrl) {
         /**
         * The base URL used for all requests on the class.
         * @type {String}
@@ -33,16 +40,16 @@ function RPCRequestContainer (baseUrl){
         * Reqeust api/RPC/DeletePerson
         */
         this._DeletePerson = new request(this._baseUrl,"api/RPC/DeletePerson","DELETE",{id:"QUERY"},null);
-}
-/**
-* Sets the request headers for all requests.
-* @param {Object} headerObject
-*/
-RPCRequestContainer.protype.setHttpHeaders = function(headerObject){
+    }
+    /**
+    * Sets the request headers for all requests.
+    * @param {Object} headerObject
+    */
+    setHttpHeaders(headerObject){
         for (var key in headerObject){
             globalTokens[key] = headerObject[key];
+        }
     }
-}
     /**
     * Method to invoke request to api/RPC/GetAllPersons. Method: GET.
     * @return {PromiseLike<Person[]>}
@@ -98,3 +105,6 @@ RPCRequestContainer.protype.setHttpHeaders = function(headerObject){
         return this._DeletePerson.ExecuteRequest({id:id}, globalTokens);
     }
 
+}
+
+export {RPCRequestContainer};

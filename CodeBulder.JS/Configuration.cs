@@ -12,7 +12,7 @@ namespace CodeBulder.JS
         private ESMode _esmode { get; set; }
         public String SingleFileOutputName { get; set; } = "requestContext.js";
         public String ModelsFolder { get; set; } = "models";
-        public String OutputDirectory { get; set; } = "wwwroot\\js";
+        public String OutputDirectory { get; set; } = "js";
         public bool MultiFileOutput { get; set; } = true;
         public ESMode ESMode
         {

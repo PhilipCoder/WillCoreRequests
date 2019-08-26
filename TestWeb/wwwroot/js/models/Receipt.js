@@ -1,9 +1,14 @@
+import {Product} from "./Product.js";
 
 /**
-* Creates Instance Of The Result Class.
-* @param {Object} data
+* Result class Receipt.
 */
-function Receipt (data){
+class Receipt {
+    /**
+    * Creates Instance Of The Result Class.
+    * @param {Object} data
+    */
+    constructor(data) {
         /**
         * @type {String}
         */
@@ -51,7 +56,9 @@ function Receipt (data){
         /**
         * @type {Product[]}
         */
-        this.products = typeof(data.products) !== "undefined" ? data.products.map(function(dataRow){ return new products(dataRow);}) : null;
+        this.products = typeof(data.products) !== "undefined" ? data.products.map(dataRow => new products(dataRow)) : null;
+    }
+
 }
 
-
+export {Receipt};

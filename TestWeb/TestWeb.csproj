@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="html\" />
+    <Folder Include="images\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,16 @@
+import {request, globalTokens} from "./request/request.js";
+import {Person} from "./models/Person.js";
+import {Receipt} from "./models/Receipt.js";
 
 /**
-* Creates Instance Of PersonContext.
-* @param {String} baseURL
+* PersonContext. Used to make requests to the Person controller.
 */
-function PersonRequestContainer (baseUrl){
+class PersonRequestContainer {
+    /**
+    * Creates Instance Of PersonContext.
+    * @param {String} baseURL
+    */
+    constructor(baseUrl) {
         /**
         * The base URL used for all requests on the class.
         * @type {String}
@@ -33,16 +40,16 @@ function PersonRequestContainer (baseUrl){
         * Reqeust api/Person/{id}
         */
         this._DeleteById = new request(this._baseUrl,"api/Person/{id}","DELETE",{id:"URL"},null);
-}
-/**
-* Sets the request headers for all requests.
-* @param {Object} headerObject
-*/
-PersonRequestContainer.protype.setHttpHeaders = function(headerObject){
+    }
+    /**
+    * Sets the request headers for all requests.
+    * @param {Object} headerObject
+    */
+    setHttpHeaders(headerObject){
         for (var key in headerObject){
             globalTokens[key] = headerObject[key];
+        }
     }
-}
     /**
     * Method to invoke request to api/Person. Method: GET.
     * @return {PromiseLike<Person[]>}
@@ -98,3 +105,6 @@ PersonRequestContainer.protype.setHttpHeaders = function(headerObject){
         return this._DeleteById.ExecuteRequest({id:id}, globalTokens);
     }
 
+}
+
+export {PersonRequestContainer};

@@ -1,9 +1,14 @@
 
+
 /**
-* Creates Instance Of The Result Class.
-* @param {Object} data
+* Result class Product.
 */
-function Product (data){
+class Product {
+    /**
+    * Creates Instance Of The Result Class.
+    * @param {Object} data
+    */
+    constructor(data) {
         /**
         * @type {String}
         */
@@ -12,6 +17,8 @@ function Product (data){
         * @type {String}
         */
         this.description = typeof(data.description) !== "undefined" ? data.description : null;
+    }
+
 }
 
-
+export {Product};

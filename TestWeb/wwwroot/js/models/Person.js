@@ -1,9 +1,14 @@
+import {Receipt} from "./Receipt.js";
 
 /**
-* Creates Instance Of The Result Class.
-* @param {Object} data
+* Result class Person.
 */
-function Person (data){
+class Person {
+    /**
+    * Creates Instance Of The Result Class.
+    * @param {Object} data
+    */
+    constructor(data) {
         /**
         * @type {String}
         */
@@ -27,7 +32,9 @@ function Person (data){
         /**
         * @type {Receipt[]}
         */
-        this.receipts = typeof(data.receipts) !== "undefined" ? data.receipts.map(function(dataRow){ return new receipts(dataRow);}) : null;
+        this.receipts = typeof(data.receipts) !== "undefined" ? data.receipts.map(dataRow => new receipts(dataRow)) : null;
+    }
+
 }
 
-
+export {Person};
