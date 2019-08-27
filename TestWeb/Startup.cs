@@ -51,6 +51,7 @@ namespace TestWeb
             app.UseCors("all");
             var jsCodeBuilder = new JSClassContainer<ControllerBase>();
             jsCodeBuilder.Configuration.OutputDirectory = "wwwroot\\js";
+           // jsCodeBuilder.Configuration.ESMode = ESMode.ES5;
             app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
             app.UseHttpsRedirection();
             app.UseMvc();

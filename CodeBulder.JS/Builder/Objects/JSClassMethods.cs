@@ -41,6 +41,8 @@ namespace CodeBulder.JS.Builder
                     ((List<String>)import.Modules).Add(parameter.TypeName);
                     import.URL = $"./{Configuration.Instance.ModelsFolder}/{parameter.TypeName}.js";
                     ((List<IImport>)Imports).Add(import);
+                    var export = JSBuilderIOCContainer.Instance.CreateExport();
+                    ((List<string>)Export.Modules).Add(parameter.TypeName);
                 }
             }
         }
@@ -53,6 +55,7 @@ namespace CodeBulder.JS.Builder
                 ((List<String>)import.Modules).Add(method.Result.TypeName);
                 import.URL = $"./{Configuration.Instance.ModelsFolder}/{method.Result.TypeName}.js";
                 ((List<IImport>)Imports).Add(import);
+                ((List<string>)Export.Modules).Add(method.Result.TypeName);
             }
         }
 
@@ -74,7 +77,7 @@ namespace CodeBulder.JS.Builder
             Name = $"{classStructure.Name}RequestContainer";
             ConstructorParamters = new List<string>() { "baseUrl" };
             Export = JSBuilderIOCContainer.Instance.CreateExport();
-            Export.Modules = new String[] { Name };
+            Export.Modules = new List<string> { Name };
         }
 
         private void createConstructorComment(ClassStructure classStructure)

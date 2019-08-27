@@ -84,7 +84,9 @@ request.prototype.ExecuteRequest = function (parms) {
             if (xhrRequest.readyState === 4) {
                 if (xhrRequest.status == 200) {
                     try {
-                        resolve(JSON.parse(xhrRequest.responseText));
+                        var response = JSON.parse(xhrRequest.responseText);
+                        response._singleParameter = true;
+                        resolve(response);
                     } catch (exeption) {
                         reject(exeption);
                     }

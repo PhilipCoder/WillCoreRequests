@@ -12,19 +12,15 @@ using System.Text;
 
 namespace CodeBulder.JS.Builder
 {
-    public partial class JSClass : JSRenderble, IJSClass
+    public partial class JSFunction : JSObjectBase, IJSClass
     {
-        private const String importToken = "<< class[import] >>";
-        private const String headerCommentToken = "<< class[headerComment] >>";
-        private const String classCommentToken = "<< class[comment] >>";
-        private const String httpHeaderFunctionCommentToken = "<< class[httpHeaderFunctionComment] >>";
-        private const String constructorCommentToken = "<< class[constructorComment] >>";
-        private const String classNameToken = "<< class[name] >>";
-        private const String extendsToken = "<< class[extends] >>";
-        private const String ConstructorParamterTag = "<< class[constructorParameters] >>";
-        private const String PropertiesToken = "<< class[property] >>";
-        private const string MethodToken = "<< class[method] >>";
-        private const string ExportToken = "<< class[exports] >>";
+        private const String headerCommentToken = "<< function[headerComment] >>";
+        private const String httpHeaderFunctionCommentToken = "<< function[httpHeaderFunctionComment] >>";
+        private const String constructorCommentToken = "<< function[constructorComment] >>";
+        private const String classNameToken = "<< function[name] >>";
+        private const String ConstructorParamterTag = "<< function[constructorParameters] >>";
+        private const String PropertiesToken = "<< function[property] >>";
+        private const string MethodToken = "<< function[method] >>";
 
         public IEnumerable<IImport> Imports { get; set; } = new List<IImport>();
         public IExport Export { get; set; }
@@ -38,35 +34,29 @@ namespace CodeBulder.JS.Builder
         public String Name { get; set; }
         public String Extends { get; set; }
 
-        public JSClass() : base(Resources._class) {}
+        public JSFunction() : base(Resources._class) {}
 
-        public JSClass(ClassStructure classStructure) : base(Resources._class)
+        public JSFunction(ClassStructure classStructure) : base(Resources.function)
         {
-            createRequestImport();
-            createClassComment(classStructure);
             createHttpHeaderFunctionComment(classStructure);
             createConstructorComment(classStructure);
             assignLocalFields(classStructure);
             createFieldsAndMethods(classStructure);
         }
 
-        public JSClass(TypeStructure typeStructure) : base( Resources.classPOKO)
+        public JSFunction(TypeStructure typeStructure) : base( Resources.functionPOKO)
         {
             assignLocalProperties(typeStructure);
-            createPOCOClassConstructorComment();
+            createPOCOClassConstructorComment(typeStructure);
             createPOCOClassProperties(typeStructure);
         }
 
         public override String GetText()
         {
-            //imports
-            if (Imports.Any()) Template = Template.Replace(importToken, Imports.Select(x => x.GetText()).Aggregate((a, b) => a + "\r\n" + b));
             //comments
             if (HeaderComment != null) Template = Template.Replace(headerCommentToken, HeaderComment.GetText());
-            if (ClassComment != null) Template = Template.Replace(classCommentToken, ClassComment.GetText());
             if (HttpHeaderFunctionComment != null) Template = Template.Replace(httpHeaderFunctionCommentToken, HttpHeaderFunctionComment.GetText());
             if (ConstructorComment != null) Template = Template.Replace(constructorCommentToken, ConstructorComment.GetText());
-            if (Extends != null) Template = Template.Replace(extendsToken, $" extends {Extends}");
             if (ConstructorParamters.Any()) Template = Template.Replace(ConstructorParamterTag, ConstructorParamters.Aggregate((a, b) => a + "," + b));
             //class name
             Template = Template.Replace(classNameToken, Name);
@@ -74,8 +64,6 @@ namespace CodeBulder.JS.Builder
             if (jsProperties.Any()) Template = Template.Replace(PropertiesToken, jsProperties.Select(x => x.GetText()).Aggregate((a, b) => a + "\r\n" + b));
             //Methods
             if (Methods.Any()) Template = Template.Replace(MethodToken, Methods.Select(x => x.GetText()).Aggregate((a, b) => a + "\r\n" + b));
-            //Exports
-            if (this.Export != null) Template = Template.Replace(ExportToken, this.Export.GetText());
             //remove unusedTokens
             CleanTemplateUp();
             return Template;

@@ -21,31 +21,57 @@ namespace TestWeb.Controllers
         [HttpGet]
         public ActionResult<Person> GetPerson(int id)
         {
-            return new Person();
+            return new Person() {
+                DateOfBirth = DateTime.Now,
+                Id = Guid.NewGuid(),
+                Name = "Nommies",
+                Surname = "Diepsloot"
+            };
         }
 
         [HttpGet]
         public async Task<Receipt> GetReceipt(int personid, int receiptid)
         {
-            return new Receipt();
+            return new Receipt()
+            {
+               
+            };
         }
 
         [HttpPost]
-        public ActionResult<bool> AddReceipt([FromBody] Person value)
+        public ActionResult<Person> AddReceipt([FromBody] Person value)
         {
-            return true;
+            return new Person()
+            {
+                DateOfBirth = DateTime.Now,
+                Id = Guid.NewGuid(),
+                Name = "Nommies",
+                Surname = "Diepsloot"
+            };
         }
 
         [HttpPut]
-        public async Task<string> UpdateReceipt(int id, [FromBody] Person value)
+        public async Task<Person> UpdateReceipt([FromQuery]int id, [FromBody] Person value)
         {
-            return "success";
+            return new Person()
+            {
+                DateOfBirth = DateTime.Now,
+                Id = Guid.NewGuid(),
+                Name = "Nommies",
+                Surname = "Diepsloot"
+            };
         }
 
         [HttpDelete]
-        public async Task<string> DeletePerson(int id)
+        public async Task<Person> DeletePerson(int id)
         {
-            return "Deleted";
+            return new Person()
+            {
+                DateOfBirth = DateTime.Now,
+                Id = Guid.NewGuid(),
+                Name = "Nommies",
+                Surname = "Diepsloot"
+            };
         }
     }
 }

@@ -4,10 +4,11 @@ using CodeBuilder.Structure;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace CodeBulder.JS.Builder
 {
-    public partial class JSClass
+    public partial class JSClass 
     {
         private void assignLocalProperties(TypeStructure typeStructure)
         {
@@ -21,6 +22,7 @@ namespace CodeBulder.JS.Builder
         private void createPOCOClassProperties(TypeStructure typeStructure)
         {
             var properties = (List<IJSProperty>)jsProperties;
+            var firstProperty = typeStructure.Properties.Any() ? typeStructure.Properties[0] : null;
             foreach (var property in typeStructure.Properties)
             {
                 var jsProperty = JSBuilderIOCContainer.Instance.CreateProperty();
@@ -30,36 +32,33 @@ namespace CodeBulder.JS.Builder
                 jsProperty.Assignable = JSBuilderIOCContainer.Instance.CreateAssignable();
                 if (property.IsSytemType)
                 {
-                    jsProperty.Assignable.ObjectAssignment = $"typeof(data.{property.Name}) !== \"undefined\" ? data.{property.Name} : null";
+                    jsProperty.Assignable.ObjectAssignment = mapSystemType(firstProperty, property);
                 }
                 else
                 {
                     if (property.IsArray)
                     {
-                        jsProperty.Assignable.ObjectAssignment = $"typeof(data.{property.Name}) !== \"undefined\" ? data.{property.Name}.map(dataRow => new {property.Name}(dataRow)) : null";
+                        jsProperty.Assignable.ObjectAssignment = mapComplexArray(firstProperty, property);
                     }
                     else
                     {
-                        jsProperty.Assignable.ObjectAssignment = $"typeof(data.{property.Name}) !== \"undefined\" ? new {property.Name}(dataRow) : null";
+                        jsProperty.Assignable.ObjectAssignment = mapComplexObject(firstProperty, property);
                     }
                 }
                 properties.Add(jsProperty);
                 if (!property.IsSytemType)
                 {
-                    var import = JSBuilderIOCContainer.Instance.CreateImport();
-                    import.Modules = new string[] { property.TypeName };
-                    import.URL = $"./{property.TypeName}.js";
-                    ((List<IImport>)Imports).Add(import);
+                    generateImportForType((List<IImport>)Imports ,property);
                 }
             }
         }
 
-        private void createPOCOClassConstructorComment()
+        private void createPOCOClassConstructorComment(TypeStructure typeStructure)
         {
-            ConstructorParamters = new List<string>() { "data" };
+            ConstructorParamters = typeStructure.Properties.Select(x => x.Name).ToList();
             ConstructorComment = JSBuilderIOCContainer.Instance.CreateComment();
             ConstructorComment.Description = $"Creates Instance Of The Result Class.";
-            ConstructorComment.Params = new Dictionary<string, JSType> { { "data", new JSObject() } };
+            ConstructorComment.Params = typeStructure.Properties.ToDictionary(a => a.Name, b => JSTypeMapping.GetJSType(b)); new Dictionary<string, JSType> { { "data", new JSObject() } };
         }
     }
 }

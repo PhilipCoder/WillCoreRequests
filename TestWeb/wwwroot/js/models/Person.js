@@ -6,33 +6,38 @@ import {Receipt} from "./Receipt.js";
 class Person {
     /**
     * Creates Instance Of The Result Class.
-    * @param {Object} data
+    * @param {String} id
+    * @param {String} name
+    * @param {String} surname
+    * @param {Date} dateOfBirth
+    * @param {Number[]} profileImage
+    * @param {Receipt[]} receipts
     */
-    constructor(data) {
+    constructor(id,name,surname,dateOfBirth,profileImage,receipts) {
         /**
         * @type {String}
         */
-        this.id = typeof(data.id) !== "undefined" ? data.id : null;
+        this.id = typeof(id._singleParameter) !== "undefined" ? id.id : id;
         /**
         * @type {String}
         */
-        this.name = typeof(data.name) !== "undefined" ? data.name : null;
+        this.name = typeof(id._singleParameter) !== "undefined" ? id.name : name;
         /**
         * @type {String}
         */
-        this.surname = typeof(data.surname) !== "undefined" ? data.surname : null;
+        this.surname = typeof(id._singleParameter) !== "undefined" ? id.surname : surname;
         /**
         * @type {Date}
         */
-        this.dateOfBirth = typeof(data.dateOfBirth) !== "undefined" ? data.dateOfBirth : null;
+        this.dateOfBirth = typeof(id._singleParameter) !== "undefined" ? id.dateOfBirth : dateOfBirth;
         /**
         * @type {Number[]}
         */
-        this.profileImage = typeof(data.profileImage) !== "undefined" ? data.profileImage : null;
+        this.profileImage = typeof(id._singleParameter) !== "undefined" ? id.profileImage : profileImage;
         /**
         * @type {Receipt[]}
         */
-        this.receipts = typeof(data.receipts) !== "undefined" ? data.receipts.map(dataRow => new receipts(dataRow)) : null;
+        this.receipts = id._singleParameter && id.receipts ? id.receipts.map(dataRow => new Receipt(dataRow)) : receipts ? receipts.map(dataRow => new Receipt(dataRow)) : null;
     }
 
 }

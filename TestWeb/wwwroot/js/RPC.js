@@ -1,5 +1,6 @@
 import {request, globalTokens} from "./request/request.js";
 import {Person} from "./models/Person.js";
+import {Receipt} from "./models/Receipt.js";
 
 /**
 * RPCContext. Used to make requests to the RPC controller.
@@ -18,27 +19,27 @@ class RPCRequestContainer {
         /**
         * Reqeust api/RPC/GetAllPersons
         */
-        this._GetAllPersons = new request(this._baseUrl,"api/RPC/GetAllPersons","GET",{},null);
+        this._GetAllPersons = new request(this._baseUrl,"api/RPC/GetAllPersons","GET",{},Person);
         /**
         * Reqeust api/RPC/GetPerson
         */
-        this._GetPerson = new request(this._baseUrl,"api/RPC/GetPerson","GET",{id:"QUERY"},null);
+        this._GetPerson = new request(this._baseUrl,"api/RPC/GetPerson","GET",{id:"QUERY"},Person);
         /**
         * Reqeust api/RPC/GetReceipt
         */
-        this._GetReceipt = new request(this._baseUrl,"api/RPC/GetReceipt","GET",{personid:"QUERY",receiptid:"QUERY"},null);
+        this._GetReceipt = new request(this._baseUrl,"api/RPC/GetReceipt","GET",{personid:"QUERY",receiptid:"QUERY"},Receipt);
         /**
         * Reqeust api/RPC/AddReceipt
         */
-        this._AddReceipt = new request(this._baseUrl,"api/RPC/AddReceipt","POST",{value:"BODY"},null);
+        this._AddReceipt = new request(this._baseUrl,"api/RPC/AddReceipt","POST",{value:"BODY"},Person);
         /**
         * Reqeust api/RPC/UpdateReceipt
         */
-        this._UpdateReceipt = new request(this._baseUrl,"api/RPC/UpdateReceipt","PUT",{id:"QUERY",value:"BODY"},null);
+        this._UpdateReceipt = new request(this._baseUrl,"api/RPC/UpdateReceipt","PUT",{id:"QUERY",value:"BODY"},Person);
         /**
         * Reqeust api/RPC/DeletePerson
         */
-        this._DeletePerson = new request(this._baseUrl,"api/RPC/DeletePerson","DELETE",{id:"QUERY"},null);
+        this._DeletePerson = new request(this._baseUrl,"api/RPC/DeletePerson","DELETE",{id:"QUERY"},Person);
     }
     /**
     * Sets the request headers for all requests.
@@ -51,7 +52,7 @@ class RPCRequestContainer {
     }
     /**
     * Method to invoke request to api/RPC/GetAllPersons. Method: GET.
-    * @return {PromiseLike<>}
+    * @return {PromiseLike<Person[]>}
     */
     async GetAllPersons (){
         return this._GetAllPersons.ExecuteRequest({}, globalTokens);
@@ -60,7 +61,7 @@ class RPCRequestContainer {
     /**
     * Method to invoke request to api/RPC/GetPerson. Method: GET.
     * @param {Number} id
-    * @return {PromiseLike<>}
+    * @return {PromiseLike<Person>}
     */
     async GetPerson (id){
         return this._GetPerson.ExecuteRequest({id:id}, globalTokens);
@@ -70,7 +71,7 @@ class RPCRequestContainer {
     * Method to invoke request to api/RPC/GetReceipt. Method: GET.
     * @param {Number} personid
     * @param {Number} receiptid
-    * @return {PromiseLike<>}
+    * @return {PromiseLike<Receipt>}
     */
     async GetReceipt (personid,receiptid){
         return this._GetReceipt.ExecuteRequest({personid:personid,receiptid:receiptid}, globalTokens);
@@ -79,7 +80,7 @@ class RPCRequestContainer {
     /**
     * Method to invoke request to api/RPC/AddReceipt. Method: POST.
     * @param {Person} value
-    * @return {PromiseLike<String>}
+    * @return {PromiseLike<Person>}
     */
     async AddReceipt (value){
         return this._AddReceipt.ExecuteRequest({value:value}, globalTokens);
@@ -89,7 +90,7 @@ class RPCRequestContainer {
     * Method to invoke request to api/RPC/UpdateReceipt. Method: PUT.
     * @param {Number} id
     * @param {Person} value
-    * @return {PromiseLike<String[]>}
+    * @return {PromiseLike<Person>}
     */
     async UpdateReceipt (id,value){
         return this._UpdateReceipt.ExecuteRequest({id:id,value:value}, globalTokens);
@@ -98,7 +99,7 @@ class RPCRequestContainer {
     /**
     * Method to invoke request to api/RPC/DeletePerson. Method: DELETE.
     * @param {Number} id
-    * @return {PromiseLike<String[]>}
+    * @return {PromiseLike<Person>}
     */
     async DeletePerson (id){
         return this._DeletePerson.ExecuteRequest({id:id}, globalTokens);
@@ -106,4 +107,4 @@ class RPCRequestContainer {
 
 }
 
-export {RPCRequestContainer};
+export {RPCRequestContainer, Person, Receipt};

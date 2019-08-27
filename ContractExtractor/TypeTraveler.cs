@@ -12,14 +12,15 @@ namespace ContractExtractor
         public void travelResult<T>(Type type, TypeStructure typeStructure, ClassContainter<T> container)
         {
             var objectType = GetItemType(type);
-            if (type == typeof(void) || (!objectType.IsSystem && container.Models.ContainsKey(objectType.Type.Name)))
-            {
-                return;
-            };
+          
             typeStructure.IsArray = objectType.IsArray;
             typeStructure.IsSytemType = objectType.IsSystem;
             typeStructure.Type = objectType.Type;
             typeStructure.TypeName = objectType.Type.Name;
+            if (type == typeof(void) || (!objectType.IsSystem && container.Models.ContainsKey(objectType.Type.Name)))
+            {
+                return;
+            };
             if (!objectType.IsSystem && AppDomain.CurrentDomain.GetAssemblies().Contains(objectType.Type.Assembly))
             {
                 foreach (var property in typeStructure.Type.GetProperties(propertyBindingFlags))

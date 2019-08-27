@@ -6,9 +6,13 @@
 </head>
 <body>
     <h1>Test</h1>
+
+    <!--Test ES6-->
+    <script type="module" src="./test.js"></script>
+    <!--Test ES5-->
     <!--include the JavaScript request context.-->
-    <script src="js/requestContext.js"></script>
-    <script>
+    <!--<script src="js/requestContext.js"></script>-->
+    <!--<script>
         //Create a new instance of the request container
         var personRequests = new PersonRequestContainer("http://localhost:53964");
         //Use promises on the requests
@@ -20,6 +24,6 @@
             personRequests.Post(people[0]);
             personRequests.DeleteById(2);
         });
-    </script>
+    </script>-->
 </body>
 </html>

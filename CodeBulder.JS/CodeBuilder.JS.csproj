@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>WillCore.Requests</PackageId>
+    <Version>0.8</Version>
+    <Authors>Philip Schoeman</Authors>
+    <Company />
+    <Product>WillCore.Requests</Product>
+    <Description>If you have a .NET core WebAPI project and if you are tired of typing out AJAX request after request, WillCore.Requests is the framework that will brighten your day.</Description>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/PhilipCoder/WillCoreRequests</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/PhilipCoder/WillCoreRequests</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>.Net Core Web API, JavaScript Requests</PackageTags>
+    <PackageReleaseNotes>Initial release, Alpha version</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="js\request\requestES5.js" />
+    <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="js\request\requestES5.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ContractExtractor\ContractExtractor.csproj" />
+    <ProjectReference Include="..\CoreBuilder\CodeBuilder.csproj">
+      <Private>true</Private>
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Core">
+      <HintPath>..\..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.core\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

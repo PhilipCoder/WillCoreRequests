@@ -20,6 +20,11 @@ class request {
         var requestURL = this.URL;
 
         headers['Content-Type'] = 'application/json';
+
+        for (var key in globalTokens) {
+            headers[key] = globalTokens[key];
+        }
+
         var requestObject = {
             method: this.Method,
             mode: 'cors',
@@ -42,16 +47,15 @@ class request {
                 throw `Unsupport parameter type ${binding}.`;
             }
         }
-        for (var key in globalTokens) {
-            headers[key] = globalTokens[key];
-        }
 
         var url = new URL(requestURL);
         var search = new URLSearchParams(requestParameters)
+        url.search = search;
         return new Promise(async (resolve, reject) => {
             var promiseCall = fetch(url, requestObject).then(async response => {
                 response = await response.json();
                 if (that.ResultType) {
+                    response._singleParameter = true;
                     if (Array.isArray(response)) {
                         response = response.map(x => new that.ResultType(x));
                     } else {
