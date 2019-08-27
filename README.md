@@ -33,7 +33,18 @@ WillCore.Requests is only tested with .Net Core 2.2.
 
 ## Getting Started
 
-NuGet package coming soon. For now download the solution, build it and reference the projects. 
+WillCore.Requests is available as a Nuget Package. Simply install the package by running the following command in the Package Manager Console:
+
+```javascript
+Install-Package WillCore.Requests
+```
+
+Then add the following using statements:
+
+```csharp
+using CodeBuilder.JS;
+using ContractExtractor;
+```
 
 To enable the JS code generation add the following line in the Configure method in the Startup.cs file:
 
@@ -47,6 +58,20 @@ app.GenerateJSContext<ControllerBase>(new JSClassContainer<Controller>());
 ```
 
 When you run your solution, the JavaScript files will be generated in the \js folder inside your solution.
+
+## WebAPI And Camel Casing
+Microsoft must have had a good reason to change all the result JSON properties from the WebAPI controllers to camel casing. WillCore.Requests 
+support the naming convention by default. However you can override the naming convention and force the API to return paschal casing. 
+When your service is configured to return results with paschal named results, you should tell the code builder to use paschal casing else your results will be empty.
+
+To configure WillCore.Requests to use pascal casing, change the initialization line in the Startup.cs to the following:
+
+```csharp
+//The optional parameter (false) tells the code builder not to use camel casing.
+app.GenerateJSContext<ControllerBase>(new JSClassContainer<ControllerBase>(), false);
+```
+
+---
 
 ## Excluding Controllers From The Code Generation
 
@@ -166,6 +191,30 @@ A file (requestContext.js) will be generated in the js folder of your solution. 
 </body>
 </html>
 ```
+---
+
+## Submitting Complex Models
+Models or complex types can be submitted via POST or PUT requests with full intellisense support. 
+
+In order to submit a model, first import the model from the same file the request context is imported from:
+*(The models are named the same as the C# models used as the action's parameters)*
+```javascript
+import { PersonRequestContainer, Person, Receipt } from "./js/Person.js";
+```
+An instance of the model has to be submitted:
+```javascript
+//Create a person with 2 receipts
+var person = new Person(50, "John", "Foe", new Date(), null,
+    [
+        new Receipt(30, 60, "Some receipt"),
+        new Receipt(31, 10, "A new receipt")
+    ]);
+//Creates the person
+var postResult = await personRequests.Post(person);
+//Updates the person
+var putResult = await personRequests.PutById(50, person);
+```
+
 ---
 
 ## Specifying HTTP Request Headers
