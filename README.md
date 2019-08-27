@@ -2,6 +2,8 @@
 
 If you have a .NET core WebAPI project and if you are tired of typing out AJAX request after request, WillCore.Requests is the framework that will brighten your day.
 
+> It is like adding a WCF service reference to your JavaScript. But for WebAPI.
+
 ---
 
 ## Features

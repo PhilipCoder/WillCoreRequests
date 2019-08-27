@@ -2,10 +2,29 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>WillCore.Requests</PackageId>
+    <Version>0.8</Version>
+    <Authors>Philip Schoeman</Authors>
+    <Company />
+    <Product>WillCore.Requests</Product>
+    <Description>If you have a .NET core WebAPI project and if you are tired of typing out AJAX request after request, WillCore.Requests is the framework that will brighten your day.</Description>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>License.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/PhilipCoder/WillCoreRequests</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/PhilipCoder/WillCoreRequests</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageTags>.Net Core Web API, JavaScript Requests</PackageTags>
+    <PackageReleaseNotes>Initial release, Alpha version</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="js\request\requestES5.js" />
+    <None Include="..\License.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
