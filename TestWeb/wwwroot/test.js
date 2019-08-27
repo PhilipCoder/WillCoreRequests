@@ -5,6 +5,7 @@ import { RPCRequestContainer } from "./js/RPC.js";
 (async () => {
     //Creates an instance of the request container.
     let personRequests = new RPCRequestContainer("http://localhost:53964");
+    personRequests.setHttpHeaders({ AuthToken: "TheTokenValue" })
     //Calls a get method to get all the instances
     var allPeople = await personRequests.GetAllPersons();
     //Gets a single person

@@ -118,7 +118,7 @@ import { RPCRequestContainer } from "./js/RPC.js";
 ```
 ---
 ### ES5 Mode
-Some people are living in the past and are still use Internet Explorer. Unfortunately there are cases where we have to cater for those poor souls and ignore the awesomeness of ES6 and later versions of JavaScript. 
+Some people are living in the past and are still using Internet Explorer. Unfortunately there are cases where we have to cater for those poor souls and ignore the awesomeness of ES6 and later versions of JavaScript. 
 
 To enable ES5 mode, change the line in your Startup.cs from and to the following:
 
@@ -164,6 +164,16 @@ A file (requestContext.js) will be generated in the js folder of your solution. 
 </body>
 </html>
 ```
+---
+
+## Specifying HTTP Request Headers
+HTTP request headers such as authentication tokens can be specified globally. Headers are set on a request container instance, however they apply globally for all future requests across all request containers.
+
+The headers can be configured via the setHttpHeaders method on a request container:
+```javascript
+let personRequests = new RPCRequestContainer("http://localhost:53964");
+personRequests.setHttpHeaders({ AuthToken: "The Token Value" })
+```
 
 ---
 
@@ -181,7 +191,7 @@ Settings that can be changed:
 
 Property | Type | Default Value | Description
 ---- | ---- | ---- | ---- |
-ESMode | Enum (ESMode) | "requestContext.js" | Sets the version of JavaScript that will be generated.
+ESMode | Enum (ESMode) | ESModeES6 | Sets the version of JavaScript that will be generated.
 ModelsFolder | String | "models" | The folder under the output directory that will contain the ES6 result modules.
 SingleFileOutputName | String | "requestContext.js" | The file name of the generated ES5 JavaScript file containing all the request logic.
 MultiFileOutput | bool | true | Indicates if all the generated code will be consolidated into a single file or be separated into multiple files.

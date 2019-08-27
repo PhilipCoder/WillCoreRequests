@@ -25,8 +25,9 @@ namespace ContractExtractor
         {
             var type = GetItemType(objectType.PropertyType);
             TypeStructure newTypeStructure = getNewTypeStructure(objectType, type, classContainter);
-            if (!type.IsSystem)
+            if (!type.IsSystem && !classContainter.Models.ContainsKey(newTypeStructure.TypeName))
             {
+                classContainter.Models[newTypeStructure.TypeName] = newTypeStructure;
                 foreach (var property in type.Type.GetProperties(propertyBindingFlags))
                 {
                     travelObject<T>(property, newTypeStructure, classContainter);
@@ -80,10 +81,6 @@ namespace ContractExtractor
                 Name = objectType.Name,
                 TypeName = type.Type.Name
             };
-            if (!paramterStructure.IsSytemType && !classContainter.Models.ContainsKey(paramterStructure.TypeName))
-            {
-                classContainter.Models[paramterStructure.TypeName] = paramterStructure;
-            }
             return paramterStructure;
         }
     }

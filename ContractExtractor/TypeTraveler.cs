@@ -11,8 +11,11 @@ namespace ContractExtractor
         internal const BindingFlags propertyBindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetField | BindingFlags.DeclaredOnly;
         public void travelResult<T>(Type type, TypeStructure typeStructure, ClassContainter<T> container)
         {
-            if (type == typeof(void)) return;
             var objectType = GetItemType(type);
+            if (type == typeof(void) || (!objectType.IsSystem && container.Models.ContainsKey(objectType.Type.Name)))
+            {
+                return;
+            };
             typeStructure.IsArray = objectType.IsArray;
             typeStructure.IsSytemType = objectType.IsSystem;
             typeStructure.Type = objectType.Type;

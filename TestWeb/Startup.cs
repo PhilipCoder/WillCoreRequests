@@ -50,7 +50,7 @@ namespace TestWeb
             }
             app.UseCors("all");
             var jsCodeBuilder = new JSClassContainer<ControllerBase>();
-            jsCodeBuilder.InstanceConfiguration.CreateComment = () => new JSXMLComment();
+            jsCodeBuilder.Configuration.OutputDirectory = "wwwroot\\js";
             app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
             app.UseHttpsRedirection();
             app.UseMvc();

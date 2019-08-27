@@ -15,6 +15,11 @@ namespace CodeBulder.JS.Builder
             Classes = new List<IJSClass>();
             StringBuilder outputFileContents = new StringBuilder();
             var outputDirectoryContext = Path.Combine(Directory.GetCurrentDirectory(), container.Configuration.OutputDirectory);
+            if (Directory.Exists(outputDirectoryContext))
+            {
+                Directory.Move(outputDirectoryContext, Path.Combine(Directory.GetCurrentDirectory(), "deletedTemp"));
+                Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "deletedTemp"), true);
+            }
             Directory.CreateDirectory(outputDirectoryContext);
             var shouldCreateMultipuleFiles = container.Configuration.MultiFileOutput;
             foreach (var filePath in container.InstanceConfiguration.AdditionalFiles.Keys)

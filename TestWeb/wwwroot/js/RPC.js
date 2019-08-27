@@ -1,6 +1,5 @@
 import {request, globalTokens} from "./request/request.js";
 import {Person} from "./models/Person.js";
-import {Receipt} from "./models/Receipt.js";
 
 /**
 * RPCContext. Used to make requests to the RPC controller.
@@ -19,15 +18,15 @@ class RPCRequestContainer {
         /**
         * Reqeust api/RPC/GetAllPersons
         */
-        this._GetAllPersons = new request(this._baseUrl,"api/RPC/GetAllPersons","GET",{},Person);
+        this._GetAllPersons = new request(this._baseUrl,"api/RPC/GetAllPersons","GET",{},null);
         /**
         * Reqeust api/RPC/GetPerson
         */
-        this._GetPerson = new request(this._baseUrl,"api/RPC/GetPerson","GET",{id:"QUERY"},Person);
+        this._GetPerson = new request(this._baseUrl,"api/RPC/GetPerson","GET",{id:"QUERY"},null);
         /**
         * Reqeust api/RPC/GetReceipt
         */
-        this._GetReceipt = new request(this._baseUrl,"api/RPC/GetReceipt","GET",{personid:"QUERY",receiptid:"QUERY"},Receipt);
+        this._GetReceipt = new request(this._baseUrl,"api/RPC/GetReceipt","GET",{personid:"QUERY",receiptid:"QUERY"},null);
         /**
         * Reqeust api/RPC/AddReceipt
         */
@@ -52,7 +51,7 @@ class RPCRequestContainer {
     }
     /**
     * Method to invoke request to api/RPC/GetAllPersons. Method: GET.
-    * @return {PromiseLike<Person[]>}
+    * @return {PromiseLike<>}
     */
     async GetAllPersons (){
         return this._GetAllPersons.ExecuteRequest({}, globalTokens);
@@ -61,7 +60,7 @@ class RPCRequestContainer {
     /**
     * Method to invoke request to api/RPC/GetPerson. Method: GET.
     * @param {Number} id
-    * @return {PromiseLike<Person>}
+    * @return {PromiseLike<>}
     */
     async GetPerson (id){
         return this._GetPerson.ExecuteRequest({id:id}, globalTokens);
@@ -71,7 +70,7 @@ class RPCRequestContainer {
     * Method to invoke request to api/RPC/GetReceipt. Method: GET.
     * @param {Number} personid
     * @param {Number} receiptid
-    * @return {PromiseLike<Receipt>}
+    * @return {PromiseLike<>}
     */
     async GetReceipt (personid,receiptid){
         return this._GetReceipt.ExecuteRequest({personid:personid,receiptid:receiptid}, globalTokens);

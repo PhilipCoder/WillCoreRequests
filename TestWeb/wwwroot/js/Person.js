@@ -1,6 +1,5 @@
 import {request, globalTokens} from "./request/request.js";
 import {Person} from "./models/Person.js";
-import {Receipt} from "./models/Receipt.js";
 
 /**
 * PersonContext. Used to make requests to the Person controller.
@@ -23,11 +22,11 @@ class PersonRequestContainer {
         /**
         * Reqeust api/Person/{id}
         */
-        this._GetById = new request(this._baseUrl,"api/Person/{id}","GET",{id:"URL"},Person);
+        this._GetById = new request(this._baseUrl,"api/Person/{id}","GET",{id:"URL"},null);
         /**
         * Reqeust api/Person/{personId}/{receiptId}
         */
-        this._GetByPersonIdAndReceiptId = new request(this._baseUrl,"api/Person/{personId}/{receiptId}","GET",{personId:"URL",receiptId:"URL"},Receipt);
+        this._GetByPersonIdAndReceiptId = new request(this._baseUrl,"api/Person/{personId}/{receiptId}","GET",{personId:"URL",receiptId:"URL"},null);
         /**
         * Reqeust api/Person
         */
@@ -61,7 +60,7 @@ class PersonRequestContainer {
     /**
     * Method to invoke request to api/Person/{id}. Method: GET.
     * @param {Number} id
-    * @return {PromiseLike<Person>}
+    * @return {PromiseLike<>}
     */
     async GetById (id){
         return this._GetById.ExecuteRequest({id:id}, globalTokens);
@@ -71,7 +70,7 @@ class PersonRequestContainer {
     * Method to invoke request to api/Person/{personId}/{receiptId}. Method: GET.
     * @param {Number} personId
     * @param {Number} receiptId
-    * @return {PromiseLike<Receipt>}
+    * @return {PromiseLike<>}
     */
     async GetByPersonIdAndReceiptId (personId,receiptId){
         return this._GetByPersonIdAndReceiptId.ExecuteRequest({personId:personId,receiptId:receiptId}, globalTokens);
