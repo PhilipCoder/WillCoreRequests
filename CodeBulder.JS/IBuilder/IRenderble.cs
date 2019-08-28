@@ -1,4 +1,4 @@
-﻿namespace CodeBulder.IBuilder
+﻿namespace CodeBuilder.IBuilder
 {
     public interface IRenderble
     {

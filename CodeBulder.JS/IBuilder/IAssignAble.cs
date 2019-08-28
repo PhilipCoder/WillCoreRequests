@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CodeBulder.JS.Types;
+using CodeBuilder.JS.Types;
 
-namespace CodeBulder.IBuilder
+namespace CodeBuilder.IBuilder
 {
     public interface IAssignAble : IRenderble
     {

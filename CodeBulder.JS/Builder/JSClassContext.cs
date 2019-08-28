@@ -1,11 +1,11 @@
-﻿using CodeBulder.IBuilder;
+﻿using CodeBuilder.IBuilder;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-namespace CodeBulder.JS.Builder
+namespace CodeBuilder.JS.Builder
 {
     public class JSClassContext<T>
     {

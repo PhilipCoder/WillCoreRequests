@@ -1,11 +1,11 @@
 ﻿using CodeBuilder.CoreBuilder;
-using CodeBulder.JS.Builder;
-using CodeBulder.JS.Properties;
+using CodeBuilder.JS.Builder;
+using CodeBuilder.JS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeBulder.JS
+namespace CodeBuilder.JS
 {
     public class Configuration
     {

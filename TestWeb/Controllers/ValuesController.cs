@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CodeBulder.JS;
+using CodeBuilder.JS;
 using ContractExtractor;
 using CodeBuilder.CoreBuilder;
 using Microsoft.AspNetCore.Mvc;

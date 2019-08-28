@@ -57,7 +57,7 @@ class request {
                 if (that.ResultType) {
                     response._singleParameter = true;
                     if (Array.isArray(response)) {
-                        response = response.map(x => new that.ResultType(x));
+                        response = response.map(x => (() => { x._singleParameter = true; return new that.ResultType(x);})());
                     } else {
                         response = new that.ResultType(response);
                     }

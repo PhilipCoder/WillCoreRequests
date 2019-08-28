@@ -1,12 +1,12 @@
-﻿using CodeBulder.IBuilder;
-using CodeBulder.JS.Builder;
+﻿using CodeBuilder.IBuilder;
+using CodeBuilder.JS.Builder;
 using CodeBuilder.Structure;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CodeBulder.JS.Properties;
+using CodeBuilder.JS.Properties;
 
-namespace CodeBulder.JS
+namespace CodeBuilder.JS
 {
     public class JSBuilderIOCContainer
     {

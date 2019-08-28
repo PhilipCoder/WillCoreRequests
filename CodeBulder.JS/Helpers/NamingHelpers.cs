@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeBulder.JS.Helpers
+namespace CodeBuilder.JS.Helpers
 {
     public static class NamingHelpers
     {

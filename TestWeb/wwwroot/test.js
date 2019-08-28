@@ -15,10 +15,10 @@ import { PersonRequestContainer, Person, Receipt } from "./js/Person.js";
     //Updates a record
     singlePerson.name = "My Name Is Bieber..whahaaha";
     //Create a person with 2 receipts
-    var person = new Person(50, "John", "Foe", new Date(), null,
+    var person = new Person(singlePerson.id, "John", "Foe", new Date(), null,
         [
-            new Receipt(30, 60, "Some receipt"),
-            new Receipt(31, 10, "A new receipt")
+            new Receipt(singlePerson.id, 30, 60, "S"),
+            new Receipt(singlePerson.id, 31, 10, "A")
         ]);
     //Creates the person
     var postResult = await personRequests.Post(person);

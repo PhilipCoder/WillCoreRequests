@@ -1,12 +1,12 @@
-﻿using CodeBulder.IBuilder;
-using CodeBulder.JS.Types;
+﻿using CodeBuilder.IBuilder;
+using CodeBuilder.JS.Types;
 using CodeBuilder.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeBulder.JS.Builder
+namespace CodeBuilder.JS.Builder
 {
     public partial class JSClass
     {

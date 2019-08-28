@@ -1,7 +1,7 @@
-﻿using CodeBulder.IBuilder;
-using CodeBulder.JS;
-using CodeBulder.JS.Helpers;
-using CodeBulder.JS.Properties;
+﻿using CodeBuilder.IBuilder;
+using CodeBuilder.JS;
+using CodeBuilder.JS.Helpers;
+using CodeBuilder.JS.Properties;
 using CodeBuilder.Structure;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace CodeBulder.JS.Builder
+namespace CodeBuilder.JS.Builder
 {
     public class JSProperty : JSRenderble, IJSProperty
     {

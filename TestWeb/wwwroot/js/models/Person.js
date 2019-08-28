@@ -37,7 +37,9 @@ class Person {
         /**
         * @type {Receipt[]}
         */
-        this.receipts = id._singleParameter && id.receipts ? id.receipts.map(dataRow => new Receipt(dataRow)) : receipts ? receipts.map(dataRow => new Receipt(dataRow)) : null;
+        this.receipts = id._singleParameter && id.receipts ? 
+                id.receipts.map(dataRow => (function(){ dataRow._singleParameter = true; return new Receipt(dataRow);})()) : 
+                receipts ? receipts.map(dataRow =>  (function(){ dataRow._singleParameter = true; return new Receipt(dataRow);})()) : null;
     }
 
 }

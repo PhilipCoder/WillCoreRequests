@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeBulder.IBuilder
+namespace CodeBuilder.IBuilder
 { 
     public interface IRunMethodRequest
     {

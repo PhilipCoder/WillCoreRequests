@@ -17,6 +17,8 @@
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>.Net Core Web API, JavaScript Requests</PackageTags>
     <PackageReleaseNotes>Initial release, Alpha version</PackageReleaseNotes>
+    <AssemblyName>CodeBuilder.JS</AssemblyName>
+    <RootNamespace>CodeBuilder.JS</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

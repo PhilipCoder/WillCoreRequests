@@ -1,6 +1,6 @@
-﻿using CodeBulder.IBuilder;
-using CodeBulder.JS.Builder;
-using CodeBulder.JS.Properties;
+﻿using CodeBuilder.IBuilder;
+using CodeBuilder.JS.Builder;
+using CodeBuilder.JS.Properties;
 using CodeBuilder.CoreBuilder;
 using CodeBuilder.Structure;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using ContractExtractor.Attributes;
 
-namespace CodeBulder.JS
+namespace CodeBuilder.JS
 {
     public class JSClassContainer<T> : ClassContainter<T>
     {

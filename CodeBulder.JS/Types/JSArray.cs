@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeBulder.JS.Types
+namespace CodeBuilder.JS.Types
 {
     public class JSArray : JSType
     {

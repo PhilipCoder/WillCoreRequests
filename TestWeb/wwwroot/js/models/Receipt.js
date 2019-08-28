@@ -67,7 +67,9 @@ class Receipt {
         /**
         * @type {Product[]}
         */
-        this.products = id._singleParameter && id.products ? id.products.map(dataRow => new Product(dataRow)) : products ? products.map(dataRow => new Product(dataRow)) : null;
+        this.products = id._singleParameter && id.products ? 
+                id.products.map(dataRow => (function(){ dataRow._singleParameter = true; return new Product(dataRow);})()) : 
+                products ? products.map(dataRow =>  (function(){ dataRow._singleParameter = true; return new Product(dataRow);})()) : null;
     }
 
 }

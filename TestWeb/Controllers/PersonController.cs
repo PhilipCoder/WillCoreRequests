@@ -27,7 +27,14 @@ namespace TestWeb.Controllers
         [HttpGet("{id}")]
         public ActionResult<Person> Get(int id)
         {
-            return new Person();
+            return new Person()
+            {
+                DateOfBirth = DateTime.Now,
+                Id = Guid.NewGuid(),
+                Name = "Lol Me",
+                Surname = "Schoeman",
+                Receipts = new List<Receipt>()
+            };
         }
 
         [HttpGet("{personId}/{receiptId}")]

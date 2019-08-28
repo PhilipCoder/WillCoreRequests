@@ -1,7 +1,7 @@
-﻿using CodeBulder.IBuilder;
-using CodeBulder.JS;
-using CodeBulder.JS.Properties;
-using CodeBulder.JS.Types;
+﻿using CodeBuilder.IBuilder;
+using CodeBuilder.JS;
+using CodeBuilder.JS.Properties;
+using CodeBuilder.JS.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;

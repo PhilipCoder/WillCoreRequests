@@ -1,11 +1,11 @@
-﻿using CodeBulder.IBuilder;
-using CodeBulder.JS;
+﻿using CodeBuilder.IBuilder;
+using CodeBuilder.JS;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace CodeBulder.JS
+namespace CodeBuilder.JS
 {
     public abstract class JSRenderble : IRenderble
     {

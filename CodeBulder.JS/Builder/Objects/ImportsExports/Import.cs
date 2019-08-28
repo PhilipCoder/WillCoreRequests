@@ -1,10 +1,10 @@
-﻿using CodeBulder.IBuilder;
-using CodeBulder.JS.Properties;
+﻿using CodeBuilder.IBuilder;
+using CodeBuilder.JS.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeBulder.JS.Builder
+namespace CodeBuilder.JS.Builder
 {
     public class Import : JSRenderble, IImport
     {

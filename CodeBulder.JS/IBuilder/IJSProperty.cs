@@ -1,6 +1,6 @@
-﻿using CodeBulder.JS.Builder;
+﻿using CodeBuilder.JS.Builder;
 
-namespace CodeBulder.IBuilder
+namespace CodeBuilder.IBuilder
 {
     public interface IJSProperty : IRenderble
     {

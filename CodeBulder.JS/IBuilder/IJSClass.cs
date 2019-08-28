@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using CodeBulder.IBuilder;
-using CodeBulder.JS.Builder;
+using CodeBuilder.IBuilder;
+using CodeBuilder.JS.Builder;
 
-namespace CodeBulder.IBuilder
+namespace CodeBuilder.IBuilder
 {
     public interface IJSClass : IRenderble
     {

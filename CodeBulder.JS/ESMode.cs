@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CodeBulder.JS
+namespace CodeBuilder.JS
 {
     public enum ESMode
     {

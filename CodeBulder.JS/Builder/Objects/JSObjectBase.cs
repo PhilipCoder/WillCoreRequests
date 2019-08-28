@@ -1,13 +1,13 @@
 ﻿using CodeBuilder.Structure;
-using CodeBulder.IBuilder;
-using CodeBulder.JS.Properties;
-using CodeBulder.JS.Types;
+using CodeBuilder.IBuilder;
+using CodeBuilder.JS.Properties;
+using CodeBuilder.JS.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeBulder.JS.Builder
+namespace CodeBuilder.JS.Builder
 {
     public abstract class JSObjectBase : JSRenderble
     {
@@ -15,12 +15,14 @@ namespace CodeBulder.JS.Builder
 
         protected string mapComplexObject(TypeStructure firstProperty, TypeStructure property)
         {
-            return $"{firstProperty.Name} && {firstProperty.Name}.{property.Name} ? new {property.TypeName}({firstProperty.Name}.{property.Name}) : {property.Name} ? new {property.TypeName}({property.Name}) : null";
+            return $@"{firstProperty.Name} && {firstProperty.Name}.{property.Name} ? ({{{firstProperty.Name}.{property.Name}._singleParameter = true;return new {property.TypeName}({firstProperty.Name}.{property.Name})}})() : {property.Name} ? new {property.TypeName}({property.Name}) : null";
         }
 
         protected string mapComplexArray(TypeStructure firstProperty, TypeStructure property)
         {
-            return $"{firstProperty.Name}._singleParameter && {firstProperty.Name}.{property.Name} ? {firstProperty.Name}.{property.Name}.map(dataRow => new {property.TypeName}(dataRow)) : {property.Name} ? {property.Name}.map(dataRow => new {property.TypeName}(dataRow)) : null";
+            return $@"{firstProperty.Name}._singleParameter && {firstProperty.Name}.{property.Name} ? 
+                {firstProperty.Name}.{property.Name}.map(dataRow => (function(){{ dataRow._singleParameter = true; return new {property.TypeName}(dataRow);}})()) : 
+                {property.Name} ? {property.Name}.map(dataRow =>  (function(){{ dataRow._singleParameter = true; return new {property.TypeName}(dataRow);}})()) : null";
         }
 
         protected string mapSystemType(TypeStructure firstProperty, TypeStructure property)
