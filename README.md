@@ -10,7 +10,7 @@ If you have a .NET core WebAPI project and if you are tired of typing out AJAX r
 * Supports either REST or RPC.
 * Simple initialization.
 * Uses reflection to generate JavaScript methods, parameters and results to mirror your WebAPI controllers. These methods can then be used to make requests to the service.
-* Full Visual Studio intellisense support via docx comments.
+* Full Visual Studio intellisense support via JSDoc comments.
 * Outputs either:
   * ES5
     * A single file containing all the functions for each controller, action, paramter class and result class.
