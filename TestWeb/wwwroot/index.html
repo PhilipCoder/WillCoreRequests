@@ -11,13 +11,16 @@
     <script type="module" src="./test.js"></script>
     <!--Test ES5-->
     <!--include the JavaScript request context.-->
-    <!--<script src="js/requestContext.js"></script>-->
-    <!--<script>
+    <!--<script src="js/requestContext.js"></script>
+    <script>
         //Create a new instance of the request container
         var personRequests = new PersonRequestContainer("http://localhost:53964");
         //Use promises on the requests
         personRequests.Get().then(function (people) {
             console.log(people[0]);
+            personRequests.PutById(8, people[0]).then(function (result) {
+                console.log(result);
+            });
             personRequests.PutById(8, people[0]).then(function (result) {
                 console.log(result);
             });

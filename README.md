@@ -42,19 +42,30 @@ Install-Package WillCore.Requests
 Then add the following using statements:
 
 ```csharp
+using CodeBuilder;
 using CodeBuilder.JS;
 using ContractExtractor;
 ```
 
-To enable the JS code generation add the following line in the Configure method in the Startup.cs file:
+To enable the JS code generation, add the WillCore.Request service to the service collection:
 
 ```csharp
-app.GenerateJSContext<ControllerBase>(new JSClassContainer<ControllerBase>());
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+    //Adds the WillCore Service
+    services.AddWillCoreRequests<JavaScript>();
+}
+```
+
+To generate the JavaScript code, run the following method on the IApplicationBuilder instance in the configure method :
+```csharp
+app.WillCoreBuildMyCode<ControllerBase>();
 ```
 
 If your controller inherit from Controller use the following line:
 ```csharp
-app.GenerateJSContext<ControllerBase>(new JSClassContainer<Controller>());
+  app.WillCoreBuildMyCode<Controller>();
 ```
 
 When you run your solution, the JavaScript files will be generated in the \js folder inside your solution.
@@ -64,11 +75,13 @@ Microsoft must have had a good reason to change all the result JSON properties f
 support the naming convention by default. However you can override the naming convention and force the API to return paschal casing. 
 When your service is configured to return results with paschal named results, you should tell the code builder to use paschal casing else your results will be empty.
 
-To configure WillCore.Requests to use pascal casing, change the initialization line in the Startup.cs to the following:
+To configure WillCore.Requests to use pascal casing, add the following method in the Configure method:
 
 ```csharp
 //The optional parameter (false) tells the code builder not to use camel casing.
-app.GenerateJSContext<ControllerBase>(new JSClassContainer<ControllerBase>(), false);
+ app.ConfigureJavascript((config, mappings) => {
+    config.APIConfiguredForCamelCase = false;
+});
 ```
 
 ---
@@ -94,7 +107,7 @@ WillCore.Requests builds ES6 modules for each controller. These modules can simp
 
 To import a request container for PersonController:
 ```javascript
-import { PersonRequestContainer } from "./js/Person.js";
+import { PersonRequestContainer } from "./js/PersonRequestContainer.js";
 ```
 
 The request container is a class, to create an instance of the class, call the constructor with the base URL of your service:
@@ -147,16 +160,13 @@ import { RPCRequestContainer } from "./js/RPC.js";
 ### ES5 Mode
 Some people are living in the past and are still using Internet Explorer. Unfortunately there are cases where we have to cater for those poor souls and ignore the awesomeness of ES6 and later versions of JavaScript. 
 
-To enable ES5 mode, change the line in your Startup.cs from and to the following:
+To enable ES5 mode, configure WillCore.Requests to generate ES5 code in the ConfigureJavascript method:
 
 ```csharp
-//From
-app.GenerateJSContext<ControllerBase>(new JSClassContainer<Controller>());
-
-//To
-var jsCodeBuilder = new JSClassContainer<ControllerBase>();
-jsCodeBuilder.Configuration.ESMode = ESMode.ES5;
-app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
+app.ConfigureJavascript((config, mappings) =>
+{
+    config.ESMode = ESMode.ES5;
+});
 ```
 
 A file (requestContext.js) will be generated in the js folder of your solution. If the folder does not exist, it will be created. Simply import the file and start using it. 
@@ -230,111 +240,91 @@ personRequests.setHttpHeaders({ AuthToken: "The Token Value" })
 
 ## Configuring Code Generation
 
-File generation configuration can be changed on the JSClassContainer.Configuration class. To access the class in the Startup.cs:
+File generation configuration can be changed in the app.ConfigureJavascript method. To access the class in the Startup.cs:
 
 ```csharp
-var jsCodeBuilder = new JSClassContainer<ControllerBase>();
-jsCodeBuilder.Configuration.//Settings go here
-app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
+app.ConfigureJavascript((config, mappings) =>{
+    config.<settingA> = ;
+    config.<settingA> = ;
+});
 ```
 
 Settings that can be changed:
 
 Property | Type | Default Value | Description
 ---- | ---- | ---- | ---- |
-ESMode | Enum (ESMode) | ESModeES6 | Sets the version of JavaScript that will be generated.
+ESMode | Enum (ESMode) | ESMode.ES6 | Sets the version of JavaScript that will be generated.
 ModelsFolder | String | "models" | The folder under the output directory that will contain the ES6 result modules.
 SingleFileOutputName | String | "requestContext.js" | The file name of the generated ES5 JavaScript file containing all the request logic.
-MultiFileOutput | bool | true | Indicates if all the generated code will be consolidated into a single file or be separated into multiple files.
 OutputDirectory | String | "js" | The folder where the generated JavaScript code will saved in.
+RequestContextNameFactory | Func<string,string> | className => $"\{ className \}RequestContainer" | Factory action that returns the filenames for all generated RequestContexts.
+ModelsNameFactory | Func<string,string> | className => $"\{ className \}" |  Factory action that returns the filenames for all generated models.
+Comments | CommentConfiguration | Default instance of comment configuration |  Configuration for the generated comments.
+Templates | Dictionary<string, string> | Default Builder Templates |   Dictionary containing the templates that will be used for code generation.
+AdditionalFiles | Dictionary<string, string> |  {"request\\request.js", Resources.request } |  Additional files that will be copied to the output directory.
+APIConfiguredForCamelCase | bool |  true |   Sets and indicates if the web service's JSON has been configured for camel or paschal casing.
+
+
+---
+
+#### Comment Configuration
+The generated JSDoc comments can be changed via the config.Comments property:
+
+Property | Type | Default Value | Description
+---- | ---- | ---- | ---- |
+ResultClassDescription | Func<string, string> | className => $"POCO class $\{className\}" | Sets the class or function comments generated for result objects.
+RequestContainerDescription | Func<string, string> | className => $"Request Context." | Sets the class or function comments generated for request containers.
+RequestContainerConstructor | Func<string, string, string> | (className, url) => $"\{className\}. Use instance to make requests to: \{url\}" | Sets the constructor comment for request containers.
+RequestMethod | Func<string, string, string> | (httpMethod, url) => $"Method used to invoke request of type: \{httpMethod\} to URL: \{url\}." | Sets the method description comments used to fire requests.
+
+
+---
+
+#### Contract Extraction Configuration
+You can change the way WillCore.Requests do recursion on your code base to find the classes and methods to build code from. This change be changed via the ConfigureWillCoreReflection method on the IApplicationBuilder instance in the Configure method:
+
+```csharp
+app.ConfigureWillCoreReflection(conf =>
+{
+    conf.AttributeExcludeFilterAttributes.Add(typeof(DisableRequestSizeLimitAttribute));
+});
+```
+
+Fields that can be changed:
+
+Property | Type | Description
+---- | ---- | ---- | ---- |
+ControllerType | Type |  The type of controller to extract
+MaxRecursiveDepth | int |  Sets the maximum level of child result classes the recursion will allow
+ClassIncludeFilterAttributes | List\<Type> |  Only classes with attributes in this array will be returned. Can be empty to return all classes.
+AttributeIncludeFilterAttributes | List\<Type> |  Only attributes in this array will be returned.
+MethodIncludeFilterAttributes | List\<Type> |  Only methods with attributes in this array will be returned. Can be empty to return all.
+ParameterIncludeFilterAttributes | List\<Type> |  Only methods with attributes in this array will be returned. Can be empty to return all.
+PropertyIncludeFilterAttributes | List\<Type> |  Only properties with attributes in this array will be returned. Can be empty to return all.
+ClassExcludeFilterAttributes | List\<Type> |  Only classes with attributes not in this array will be returned. 
+AttributeExcludeFilterAttributes | List\<Type> |  Only attributes in this array will be returned.
+MethodExcludeFilterAttributes | List\<Type> |  Only methods with attributes not in this array will be returned
+ParameterExcludeFilterAttributes | List\<Type> |  Only methods with attributes not in this array will be returned.
+PropertyExcludeFilterAttributes | List\<Type> |  Only properties with attributes not in this array will be returned.
+
+
 
 ---
 
 #### Swapping Code Generation Implementations
 
-Implementations used for code generations can be swapped out via the dependency container. All code building functionality can be swapped out.
+WillCore.Requests uses it's own IOC implentation under the hood. Implementations used for code generations can be swapped out via the dependency container. All code building functionality can be swapped out.
 
 For more information on available modules, please see source code.
 
-For example, to swap out the docx comments in the generated files with XML comments:
-
-From docx:
-```javascript
-/**
-* Method to invoke request to api/Person/{personId}/{receiptId}. Method: GET.
-* @param {Number} personId
-* @param {Number} receiptId
-* @return {PromiseLike<Receipt>}
-*/
-```
-
-To XML:
-
-```javascript
-//===============================================
-//<summary>Method to invoke request to api/Person/{personId}/{receiptId}. Method: GET.</summary>
-//<param>CodeBulder.JS.Types.JSNumber</param>
-//<typeparam>Number</typeparam>
-//<param>CodeBulder.JS.Types.JSNumber</param>
-//<typeparam>Number</typeparam>
-//<returns>PromiseLike<Receipt></returns>
-//===============================================
-```
-
-Simply make a class "JSXMLComment.cs" and place it in your project. Inherit it from JSRenderble and IComment:
-
 ```csharp
-public class JSXMLComment : JSRenderble, IComment
+ app.ConfigureJavascript((config, mappings) =>
 {
-    public bool? IsPublic { get; set; }
-    public JSType ReturnType { get; set; }
-    public IDictionary<string, JSType> Params { get; set; }
-    public JSType Type { get; set; }
-    public string Description { get; set; }
-    public JSXMLComment() {
-        Params = new Dictionary<string, JSType>();
-    }
-
-    public new String GetText()
-    {
-        var result = new StringBuilder();
-        result.AppendLine("//===============================================");
-        if (Description != null)
-        {
-            result.AppendLine($"//<summary>{Description}</summary>");
-        }
-        if (IsPublic.HasValue)
-        {
-            result.AppendLine(IsPublic.Value ? "//<access>Public</access>" : "</access>Private</access>");
-        }
-        if (Type != null)
-        {
-            result.AppendLine($"//<returns>{Type.JSTypeDef}</returns>");
-        }
-        foreach (var key in Params.Keys)
-        {
-            result.AppendLine($"//<param>{Params[key]}</param>");
-            result.AppendLine($"//<typeparam>{Params[key].JSTypeDef}</typeparam>");
-        }
-        if (ReturnType != null)
-        {
-            result.AppendLine($"//<returns>{ReturnType.JSTypeDef}</returns>");
-        }
-        result.Append("//===============================================");
-        return result.ToString();
-    }
-}
+    mappings.
+    MapType<IInterfaceA, ImplentationA>().
+    MapType<IInterfaceB, ImplentationB>();
+});
 ```
-
-Now you can register the new code generation module in your Startup.cs:
-
-```csharp
-var jsCodeBuilder = new JSClassContainer<ControllerBase>();
-jsCodeBuilder.InstanceConfiguration.CreateComment = () => new JSXMLComment();
-app.GenerateJSContext<ControllerBase>(jsCodeBuilder);
-```
-
-All generated code should now have XML instead of docx comments.
 
 ### Licence
 This project is licensed under the MIT License

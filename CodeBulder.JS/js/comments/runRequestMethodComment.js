@@ -1,0 +1,5 @@
+ /**
+    * << description >>
+<< ParameterTypeComment >>
+    * @return {<< resultType >>}
+*/

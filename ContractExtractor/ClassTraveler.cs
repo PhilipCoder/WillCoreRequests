@@ -1,5 +1,4 @@
-﻿using CodeBuilder.CoreBuilder;
-using CodeBuilder.Structure;
+﻿using ICodeBuilder;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -14,35 +13,35 @@ namespace ContractExtractor
         {
             ResultCamelCase = resultCamelCase;
         }
-        public ClassContainter<T> TravelClasses<T>(ClassContainter<T> classContainter)
+        public ClassContainter TravelClasses(ClassContainter classContainter)
         {
-            foreach (var controller in getAllEntities<T>())
+            foreach (var controller in getAllEntities(classContainter.recursionConfiguration.ControllerType))
             {
                 if (shouldClassBeExcluded(classContainter, controller) || shouldClassBeIncluded(classContainter, controller)) continue;
                 ClassStructure newController = getClassStructureInstance(classContainter, controller);
                 classContainter.Classes.Add(newController);
-                travelController<T>(controller, newController, classContainter);
+                travelController(controller, newController, classContainter);
             }
             return classContainter;
         }
 
-        private void travelController<T>(Type controller, ClassStructure classStructure, ClassContainter<T> classContainter)
+        private void travelController(Type controller, ClassStructure classStructure, ClassContainter classContainter)
         {
             controller.GetMethods(methodBindingFlags).ToList().
-                ForEach(action => travelAction<T>(action, classStructure, classContainter));
+                ForEach(action => travelAction(action, classStructure, classContainter));
         }
 
-        private bool shouldClassBeIncluded<T>(ClassContainter<T> classContainter, Type controller)
+        private bool shouldClassBeIncluded(ClassContainter classContainter, Type controller)
         {
-            return classContainter.ClassIncludeFilterAttributes.Length > 0 && !classContainter.ClassIncludeFilterAttributes.Any(x => controller.GetCustomAttribute(x) != null);
+            return classContainter.recursionConfiguration.ClassIncludeFilterAttributes.Count() > 0 && !classContainter.recursionConfiguration.ClassIncludeFilterAttributes.Any(x => controller.GetCustomAttribute(x) != null);
         }
 
-        private bool shouldClassBeExcluded<T>(ClassContainter<T> classContainter, Type controller)
+        private bool shouldClassBeExcluded(ClassContainter classContainter, Type controller)
         {
-            return classContainter.ClassExcludeFilterAttributes.Any(x => controller.GetCustomAttribute(x) != null) || controller.GetType() == typeof(T);
+            return classContainter.recursionConfiguration.ClassExcludeFilterAttributes.Any(x => controller.GetCustomAttribute(x) != null) || controller.GetType() == classContainter.recursionConfiguration.ControllerType;
         }
 
-        private ClassStructure getClassStructureInstance<T>(ClassContainter<T> classContainter, Type controller)
+        private ClassStructure getClassStructureInstance(ClassContainter classContainter, Type controller)
         {
             return new ClassStructure()
             {

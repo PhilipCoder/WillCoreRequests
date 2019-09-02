@@ -55,11 +55,12 @@ class request {
             var promiseCall = fetch(url, requestObject).then(async response => {
                 response = await response.json();
                 if (that.ResultType) {
-                    response._singleParameter = true;
                     if (Array.isArray(response)) {
-                        response = response.map(x => (() => { x._singleParameter = true; return new that.ResultType(x);})());
+                        response = response.map(x => (() => { var result = new that.ResultType(); result._loadFromObject(x); return result;})());
                     } else {
-                        response = new that.ResultType(response);
+                        var newClassInstance = new that.ResultType();
+                        newClassInstance._loadFromObject(response);
+                        response = newClassInstance;
                     }
                 }
                 resolve(response);

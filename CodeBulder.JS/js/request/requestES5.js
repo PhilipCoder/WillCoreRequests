@@ -52,7 +52,7 @@ request.prototype.ExecuteRequest = function (parms) {
     var requestBody = {};
     var requestParameters = {};
     var requestURL = this.URL;
-
+    var that = this;
     var hasQueryParamters = false;
     var requestBody = null;
     for (var key in this.RequestBindings) {
@@ -85,7 +85,15 @@ request.prototype.ExecuteRequest = function (parms) {
                 if (xhrRequest.status == 200) {
                     try {
                         var response = JSON.parse(xhrRequest.responseText);
-                        response._singleParameter = true;
+                        if (that.ResultType) {
+                            if (Array.isArray(response)) {
+                                response = response.map(function(row){ var result = new that.ResultType(); result._loadFromObject(row); return result; });
+                            } else {
+                                var newClassInstance = new that.ResultType();
+                                newClassInstance._loadFromObject(response);
+                                response = newClassInstance;
+                            }
+                        }
                         resolve(response);
                     } catch (exeption) {
                         reject(exeption);

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using CodeBuilder.JS;
 using ContractExtractor;
-using CodeBuilder.CoreBuilder;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ContractExtractor.Attributes;
+using ICodeBuilder.Attributes;
 
 namespace TestWeb.Controllers
 {
@@ -20,7 +19,8 @@ namespace TestWeb.Controllers
         [HttpGet]
         public ActionResult<String> Get()
         {
-            return JsonConvert.SerializeObject(new ClassTraveler(true).TravelClasses<ControllerBase>(new JSClassContainer<ControllerBase>() { }), Formatting.Indented);
+            var result = new ClassTraveler(true).TravelClasses(new JavaScript() { });
+            return JsonConvert.SerializeObject(new { result.Classes, result.Models }, Formatting.Indented);
         }
 
         // GET api/values/5

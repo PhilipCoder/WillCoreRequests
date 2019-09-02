@@ -1,9 +1,8 @@
-﻿using ContractExtractor.Models;
-using CodeBuilder.CoreBuilder;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ICodeBuilder;
 
 namespace ContractExtractor
 {
@@ -18,24 +17,24 @@ namespace ContractExtractor
             return result;
         }
 
-        public List<Type> getAllEntities<T>()
+        public List<Type> getAllEntities(Type type)
         {
             return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
                  .Where(x =>
-                 (typeof(T).IsGenericType && typeof(T).GenericTypeArguments[0].IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract) ||
-                 typeof(T).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract
+                 (type.IsGenericType && type.GenericTypeArguments[0].IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract) ||
+                 type.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract
                  ).ToList();
         }
 
-        public Dictionary<string, Attribute> filterAndMapAttributesToDictionary<T>(IEnumerable<Attribute> attributes, ClassContainter<T> classContainter)
+        public Dictionary<string, Attribute> filterAndMapAttributesToDictionary(IEnumerable<Attribute> attributes, ClassContainter classContainter)
         {
             return attributes.Where(x => shouldIncludeAttribute(classContainter, x)).ToDictionary(a => a.GetType().Name, b => b);
         }
 
-        public bool shouldIncludeAttribute<T>(ClassContainter<T> classContainter, Attribute attribute)
+        public bool shouldIncludeAttribute(ClassContainter classContainter, Attribute attribute)
         {
-            return !classContainter.AttributeExcludeFilterAttributes.Contains(attribute.GetType()) &&
-                (classContainter.AttributeIncludeFilterAttributes.Length > 0 || classContainter.AttributeIncludeFilterAttributes.Contains(attribute.GetType()));
+            return !classContainter.recursionConfiguration.AttributeExcludeFilterAttributes.Contains(attribute.GetType()) &&
+                (classContainter.recursionConfiguration.AttributeIncludeFilterAttributes.Count > 0 || classContainter.recursionConfiguration.AttributeIncludeFilterAttributes.Contains(attribute.GetType()));
         }
 
         private static bool isBaseType(ItemType result)

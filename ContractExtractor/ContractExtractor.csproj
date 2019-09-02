@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreBuilder\CodeBuilder.csproj" />
+    <ProjectReference Include="..\ICodeBuilder\ICodeBuilder.csproj" />
   </ItemGroup>
 
   <ItemGroup>

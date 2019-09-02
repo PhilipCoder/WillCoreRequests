@@ -1,0 +1,2 @@
+﻿<< PropertyComment >>
+this.<< propertyName >> = << propertyName >>;

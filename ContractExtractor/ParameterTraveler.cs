@@ -1,5 +1,4 @@
-﻿using CodeBuilder.CoreBuilder;
-using CodeBuilder.Structure;
+﻿using ICodeBuilder;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -8,21 +7,27 @@ namespace ContractExtractor
 {
     public class ParameterTraveler : TypeTraveler
     {
-        public void travelParamters<T>(ParameterInfo parameter, MethodStructure method, ClassContainter<T> classContainter)
+        public void travelParamters(ParameterInfo parameter, MethodStructure method, ClassContainter classContainter)
         {
             if (shouldExcludeParameter(parameter, classContainter) || shouldIncludeParamter(parameter, classContainter)) return;
             var objectType = GetItemType(parameter.ParameterType);
-            TypeStructure parameterStructure = getNewTypeStructuree<T>(classContainter, parameter, method, objectType);
+            TypeStructure parameterStructure = getNewTypeStructuree(classContainter, parameter, method, objectType);
             if (shouldProcessParameter(objectType, parameterStructure))
             {
                 var properties = parameter.ParameterType.GetProperties(propertyBindingFlags).ToList();
-                properties.ForEach(property => travelObject(property, parameterStructure, classContainter));
+                properties.ForEach(property => travelObject(property, parameterStructure, classContainter, method, 0));
             }
 
         }
 
-        private void travelObject<T>(PropertyInfo objectType, TypeStructure typeStructure, ClassContainter<T> classContainter)
+        private void travelObject(PropertyInfo objectType, TypeStructure typeStructure, ClassContainter classContainter, MethodStructure method, int depth)
         {
+            depth++;
+            if (depth > classContainter.recursionConfiguration.MaxRecursiveDepth)
+            {
+                throw new Exception($"WillCore.Requests reflection has encountered a method parameter that exceeds the max recursive depth of {classContainter.recursionConfiguration.MaxRecursiveDepth}. This happened on method {method.Name} and type {typeStructure.TypeName}.  " +
+                    $"Please check the class depth or increase the default maximum recursive depth of WillCore.Requests.");
+            }
             var type = GetItemType(objectType.PropertyType);
             TypeStructure newTypeStructure = getNewTypeStructure(objectType, type, classContainter);
             if (!type.IsSystem && !classContainter.Models.ContainsKey(newTypeStructure.TypeName))
@@ -30,28 +35,28 @@ namespace ContractExtractor
                 classContainter.Models[newTypeStructure.TypeName] = newTypeStructure;
                 foreach (var property in type.Type.GetProperties(propertyBindingFlags))
                 {
-                    travelObject<T>(property, newTypeStructure, classContainter);
+                    travelObject(property, newTypeStructure, classContainter, method, depth);
                 }
             }
             typeStructure.Properties.Add(new TypeStructure(newTypeStructure));
         }
 
-        private bool shouldProcessParameter(Models.ItemType objectType, TypeStructure parameterStructure)
+        private bool shouldProcessParameter(ItemType objectType, TypeStructure parameterStructure)
         {
             return !parameterStructure.IsSytemType && AppDomain.CurrentDomain.GetAssemblies().Contains(objectType.Type.Assembly);
         }
 
-        private bool shouldIncludeParamter<T>(ParameterInfo parameter, ClassContainter<T> classContainter)
+        private bool shouldIncludeParamter(ParameterInfo parameter, ClassContainter classContainter)
         {
-            return classContainter.ParameterIncludeFilterAttributes.Length > 0 && !classContainter.ParameterIncludeFilterAttributes.Any(x => parameter.GetCustomAttribute(x) != null);
+            return classContainter.recursionConfiguration.ParameterIncludeFilterAttributes.Count() > 0 && !classContainter.recursionConfiguration.ParameterIncludeFilterAttributes.Any(x => parameter.GetCustomAttribute(x) != null);
         }
 
-        private bool shouldExcludeParameter<T>(ParameterInfo parameter, ClassContainter<T> classContainter)
+        private bool shouldExcludeParameter(ParameterInfo parameter, ClassContainter classContainter)
         {
-            return classContainter.ParameterExcludeFilterAttributes.Any(x => parameter.GetCustomAttribute(x) != null);
+            return classContainter.recursionConfiguration.ParameterExcludeFilterAttributes.Any(x => parameter.GetCustomAttribute(x) != null);
         }
         
-        private TypeStructure getNewTypeStructuree<T>(ClassContainter<T> classContainter, ParameterInfo parameter, MethodStructure method, Models.ItemType objectType)
+        private TypeStructure getNewTypeStructuree(ClassContainter classContainter, ParameterInfo parameter, MethodStructure method, ItemType objectType)
         {
             var paramterStructure = new TypeStructure
             {
@@ -70,7 +75,7 @@ namespace ContractExtractor
             return paramterStructure;
         }
 
-        private TypeStructure getNewTypeStructure<T>(PropertyInfo objectType, Models.ItemType type, ClassContainter<T> classContainter)
+        private TypeStructure getNewTypeStructure(PropertyInfo objectType, ItemType type, ClassContainter classContainter)
         {
             var paramterStructure = new TypeStructure
             {

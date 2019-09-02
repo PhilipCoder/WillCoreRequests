@@ -1,0 +1,2 @@
+﻿<< PropertyComment >>
+this.<< propertyName >> = typeof dataObject !== "undefined" &&  typeof dataObject.<< propertyName >> !== "undefined" ? dataObject.<< propertyName >>.map(function(row) { var newObj = new << type >>(); newObj._loadFromObject(row); return newObj; }) : [];

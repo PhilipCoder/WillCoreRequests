@@ -1,4 +1,4 @@
-﻿using CodeBuilder.Structure;
+﻿using ICodeBuilder;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -42,33 +42,86 @@ namespace CodeBuilder.JS.Types
             { typeof(DateTime), new JSDate() },
             { typeof(DateTime?), new JSDate() },
 
+            { typeof(bool?), new JSBool() },
+            { typeof(bool), new JSBool() },
+
             { typeof(object), new JSObject() }
+        };
+
+        public static Dictionary<Type, JSType> TypeMappingsArray = new Dictionary<Type, JSType>
+        {
+            { typeof(sbyte), new JSNumberArray() },
+            { typeof(byte), new JSNumberArray() },
+            { typeof(short), new JSNumberArray() },
+            { typeof(ushort), new JSNumberArray() },
+            { typeof(int), new JSNumberArray() },
+            { typeof(uint), new JSNumberArray() },
+            { typeof(long), new JSNumberArray() },
+            { typeof(ulong), new JSNumberArray() },
+            { typeof(float), new JSNumberArray() },
+            { typeof(double), new JSNumberArray() },
+            { typeof(decimal), new JSNumberArray() },
+
+            { typeof(sbyte?), new JSNumberArray() },
+            { typeof(byte?), new JSNumberArray() },
+            { typeof(short?), new JSNumberArray() },
+            { typeof(ushort?), new JSNumberArray() },
+            { typeof(int?), new JSNumberArray() },
+            { typeof(uint?), new JSNumberArray() },
+            { typeof(long?), new JSNumberArray() },
+            { typeof(ulong?), new JSNumberArray() },
+            { typeof(float?), new JSNumberArray() },
+            { typeof(double?), new JSNumberArray() },
+            { typeof(decimal?), new JSNumberArray() },
+
+             { typeof(Enum), new JSNumberArray() },
+
+            { typeof(string), new JSStringArray() },
+            { typeof(char), new JSStringArray() },
+            { typeof(char?), new JSStringArray() },
+
+            { typeof(DateTime), new JSDateArray() },
+            { typeof(DateTime?), new JSDateArray() },
+
+            { typeof(bool?), new JSBoolArray() },
+            { typeof(bool), new JSBoolArray() },
+
+            { typeof(object), new JSObjectArray() }
         };
 
         public static JSType GetJSType(TypeStructure type, bool isPromise = false)
         {
+            JSType jsType;
             if (type.IsSytemType)
             {
-                var jsType = TypeMappings.ContainsKey(type.Type) ? (JSType)Activator.CreateInstance(TypeMappings[type.Type].GetType()) : new JSString();
                 if (!type.IsArray)
                 {
-                    jsType.IsPromise = isPromise;
+                    jsType = TypeMappings.ContainsKey(type.Type) ? (JSType)Activator.CreateInstance(TypeMappings[type.Type].GetType()) : new JSString();
                 }
-                return type.IsArray ? new JSArray(jsType) { IsPromise = isPromise } : jsType;
+                else
+                {
+                    jsType = TypeMappingsArray.ContainsKey(type.Type) ? (JSType)Activator.CreateInstance(TypeMappingsArray[type.Type].GetType()) : new JSStringArray();
+                }
             }
             else
             {
-                var jsType = new JSClassType
-                {
-                    ClassName = type.TypeName,
-                   
-                };
                 if (!type.IsArray)
                 {
-                    jsType.IsPromise = isPromise;
+                    jsType = new JSClass
+                    {
+                        ClassName = type.TypeName,
+                    };
                 }
-                return type.IsArray ? new JSArray(jsType) { IsPromise = isPromise } : (JSType)jsType;
+                else
+                {
+                    jsType = new JSClassArray
+                    {
+                        ClassName = type.TypeName,
+                    };
+                }
             }
+            jsType.IsPromise = isPromise;
+            return jsType;
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using CodeBuilder.CoreBuilder;
-using CodeBuilder.Structure;
+﻿using ICodeBuilder;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -9,15 +8,20 @@ namespace ContractExtractor
     public class TypeTraveler : BaseTraveler
     {
         internal const BindingFlags propertyBindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetField | BindingFlags.DeclaredOnly;
-        public void travelResult<T>(Type type, TypeStructure typeStructure, ClassContainter<T> container)
+        public void travelResult(Type type, TypeStructure typeStructure, ClassContainter container, MethodStructure method, int depth)
         {
             var objectType = GetItemType(type);
-          
             typeStructure.IsArray = objectType.IsArray;
             typeStructure.IsSytemType = objectType.IsSystem;
             typeStructure.Type = objectType.Type;
             typeStructure.TypeName = objectType.Type.Name;
-            if (type == typeof(void) || (!objectType.IsSystem && container.Models.ContainsKey(objectType.Type.Name)))
+            depth++;
+            if (depth > container.recursionConfiguration.MaxRecursiveDepth)
+            {
+                throw new Exception($"WillCore.Requests reflection has encountered a method result that exceeds the max recursive depth of {container.recursionConfiguration.MaxRecursiveDepth}. This happened on method {method.Name} and type {typeStructure.TypeName}.  " +
+                    $"Please check the class depth or increase the default maximum recursive depth of WillCore.Requests.");
+            }
+            if (type == typeof(void))
             {
                 return;
             };
@@ -31,7 +35,7 @@ namespace ContractExtractor
                         Name = propertyName,
                         Attributes = property.GetCustomAttributes().ToDictionary(a => a.GetType().Name, b => b)
                     };
-                    travelResult(property.PropertyType, newTypeStructure, container);
+                    travelResult(property.PropertyType, newTypeStructure, container, method, depth);
                     typeStructure.Properties.Add(new TypeStructure(newTypeStructure));
                 }
                 if (!container.Models.ContainsKey(typeStructure.TypeName))

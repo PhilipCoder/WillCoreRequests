@@ -61,46 +61,45 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;&lt; class[headerComment] &gt;&gt;
-        ///&lt;&lt; class[import] &gt;&gt;
-        ///
-        ///&lt;&lt; class[comment] &gt;&gt;
-        ///class &lt;&lt; class[name] &gt;&gt;&lt;&lt; class[extends] &gt;&gt; {
-        ///    &lt;&lt; class[constructorComment] &gt;&gt;
-        ///    constructor(&lt;&lt; class[constructorParameters] &gt;&gt;) {
-        ///&lt;&lt; class[property] &gt;&gt;
-        ///    }
-        ///    &lt;&lt; class[httpHeaderFunctionComment] &gt;&gt;
-        ///    setHttpHeaders(headerObject){
-        ///        for (var key in headerObject){
-        ///            globalTokens[key] = headerObject[key];
-        ///        }
-        ///    }
-        ///&lt;&lt; class[method] &gt;&gt;
-        ///}
-        ///
-        ///&lt;&lt; class[exports] &gt;&gt;.
+        ///   Looks up a localized string similar to     &lt;&lt; PropertyComment &gt;&gt;
+        ///    this.&lt;&lt; propertyName &gt;&gt; = dataObject.&lt;&lt; propertyName &gt;&gt;;
+        ///.
         /// </summary>
-        internal static string _class {
+        internal static string assignmentFromObject {
             get {
-                return ResourceManager.GetString("_class", resourceCulture);
+                return ResourceManager.GetString("assignmentFromObject", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;&lt; class[headerComment] &gt;&gt;
-        ///&lt;&lt; class[import] &gt;&gt;
+        ///   Looks up a localized string similar to  /**
+        ///    * &lt;&lt; description &gt;&gt;
+        ///&lt;&lt; ParameterTypeComment &gt;&gt;
+        ///*/.
+        /// </summary>
+        internal static string classConstructorComment {
+            get {
+                return ResourceManager.GetString("classConstructorComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt; POCOImport &gt;&gt;
         ///
-        ///&lt;&lt; class[comment] &gt;&gt;
-        ///class &lt;&lt; class[name] &gt;&gt;&lt;&lt; class[extends] &gt;&gt; {
-        ///    &lt;&lt; class[constructorComment] &gt;&gt;
-        ///    constructor(&lt;&lt; class[constructorParameters] &gt;&gt;) {
-        ///&lt;&lt; class[property] &gt;&gt;
+        ///class &lt;&lt; name &gt;&gt; 
+        ///{
+        ///    &lt;&lt; ClassConstructorComment &gt;&gt;
+        ///    constructor(&lt;&lt; constructorParameters &gt;&gt;) 
+        ///    {
+        ///&lt;&lt; DirectAssignmentProperty &gt;&gt;
         ///    }
-        ///&lt;&lt; class[method] &gt;&gt;
+        ///    _loadFromObject(dataObject)
+        ///    {
+        ///&lt;&lt; FromObjectAssignmentProperty &gt;&gt;        
+        ///    }
         ///}
         ///
-        ///&lt;&lt; class[exports] &gt;&gt;.
+        ///&lt;&lt; ExportPOCO &gt;&gt;.
         /// </summary>
         internal static string classPOKO {
             get {
@@ -109,7 +108,47 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to export {&lt;&lt; exports[types] &gt;&gt;};.
+        ///   Looks up a localized string similar to import {request,globalTokens} from &quot;./request/request.js&quot;;
+        ///&lt;&lt; RequestContextImport &gt;&gt;
+        ///
+        ///class &lt;&lt; name &gt;&gt; 
+        ///{
+        ///    &lt;&lt; ClassConstructorComment &gt;&gt;
+        ///    constructor(&lt;&lt; constructorParameters &gt;&gt;) 
+        ///    {
+        ///&lt;&lt; DirectAssignmentProperty &gt;&gt;
+        ///&lt;&lt; RunRequestProperty &gt;&gt;
+        ///    }
+        ///    setHttpHeaders(headerObject)
+        ///    {
+        ///       for (var key in headerObject){
+        ///            globalTokens[key] = headerObject[key];
+        ///        }
+        ///    }
+        ///&lt;&lt; RunMethodRequest &gt;&gt;
+        ///}
+        ///
+        ///&lt;&lt; ExportRequestContext &gt;&gt;.
+        /// </summary>
+        internal static string classRequest {
+            get {
+                return ResourceManager.GetString("classRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt; PropertyComment &gt;&gt;
+        ///this.&lt;&lt; propertyName &gt;&gt; = &lt;&lt; propertyName &gt;&gt;;
+        ///.
+        /// </summary>
+        internal static string directAssignment {
+            get {
+                return ResourceManager.GetString("directAssignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to export {&lt;&lt; types &gt;&gt;};.
         /// </summary>
         internal static string exports {
             get {
@@ -142,14 +181,16 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;&lt; function[headerComment] &gt;&gt;
-        ///
-        ///&lt;&lt; function[constructorComment] &gt;&gt;
-        ///function &lt;&lt; function[name] &gt;&gt; (&lt;&lt; function[constructorParameters] &gt;&gt;){
-        ///&lt;&lt; function[property] &gt;&gt;
+        ///   Looks up a localized string similar to  &lt;&lt; ClassConstructorComment &gt;&gt;
+        ///function &lt;&lt; name &gt;&gt; (&lt;&lt; constructorParameters &gt;&gt;)
+        ///{
+        ///&lt;&lt; DirectAssignmentProperty &gt;&gt;
         ///}
         ///
-        ///&lt;&lt; function[method] &gt;&gt;
+        /// &lt;&lt; name &gt;&gt;.prototype._loadFromObject = function(dataObject)
+        ///{
+        ///&lt;&lt; FromObjectAssignmentProperty &gt;&gt;        
+        ///}
         ///.
         /// </summary>
         internal static string functionPOKO {
@@ -159,7 +200,32 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to import {&lt;&lt; import[types] &gt;&gt;} from &quot;&lt;&lt; import[url] &gt;&gt;&quot;;.
+        ///   Looks up a localized string similar to &lt;&lt; ClassConstructorComment &gt;&gt;
+        ///function &lt;&lt; name &gt;&gt; (&lt;&lt; constructorParameters &gt;&gt;)
+        ///{
+        ///&lt;&lt; DirectAssignmentProperty &gt;&gt;
+        ///&lt;&lt; RunRequestProperty &gt;&gt;
+        ///    this.setHttpHeaders = function (headerObject)
+        ///    {
+        ///        for (var key in headerObject)
+        ///        {
+        ///              globalTokens[key] = headerObject[key];
+        ///        }
+        ///    }
+        ///&lt;&lt; RunMethodRequest &gt;&gt;
+        ///}
+        ///
+        ///
+        ///.
+        /// </summary>
+        internal static string functionRequest {
+            get {
+                return ResourceManager.GetString("functionRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to import {&lt;&lt; types &gt;&gt;} from &quot;&lt;&lt; url &gt;&gt;&quot;;.
         /// </summary>
         internal static string import {
             get {
@@ -168,12 +234,87 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to         &lt;&lt; property[comment] &gt;&gt;
-        ///        this.&lt;&lt; property[name] &gt;&gt; = &lt;&lt; property[assignable] &gt;&gt;;.
+        ///   Looks up a localized string similar to &lt;&lt; PropertyComment &gt;&gt;
+        ///this.&lt;&lt; propertyName &gt;&gt; = &lt;&lt; propertyName &gt;&gt; ? &lt;&lt; propertyName &gt;&gt;.map(x=&gt; new &lt;&lt; type &gt;&gt;(&lt;&lt; parameters &gt;&gt;)) : [];.
         /// </summary>
-        internal static string property {
+        internal static string newArrayAssignment {
             get {
-                return ResourceManager.GetString("property", resourceCulture);
+                return ResourceManager.GetString("newArrayAssignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt; PropertyComment &gt;&gt;
+        ///this.&lt;&lt; propertyName &gt;&gt; = &lt;&lt; propertyName &gt;&gt; ? &lt;&lt; propertyName &gt;&gt;.map(function(x){ return new &lt;&lt; type &gt;&gt;(&lt;&lt; parameters &gt;&gt;);}) : [];.
+        /// </summary>
+        internal static string newArrayAssignmentES5 {
+            get {
+                return ResourceManager.GetString("newArrayAssignmentES5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt; PropertyComment &gt;&gt;
+        ///this.&lt;&lt; propertyName &gt;&gt; =  dataObject.&lt;&lt; propertyName &gt;&gt; ? dataObject.&lt;&lt; propertyName &gt;&gt;.map(row =&gt; ( row =&gt; { let newObj = new &lt;&lt; type &gt;&gt;(); newObj._loadFromObject(row); return newObj; })(row)) : [];
+        ///.
+        /// </summary>
+        internal static string newArrayAssignmentFromObject {
+            get {
+                return ResourceManager.GetString("newArrayAssignmentFromObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt; PropertyComment &gt;&gt;
+        ///this.&lt;&lt; propertyName &gt;&gt; =  dataObject.&lt;&lt; propertyName &gt;&gt; ? dataObject.&lt;&lt; propertyName &gt;&gt;.map(function(row) { var newObj = new &lt;&lt; type &gt;&gt;(); newObj._loadFromObject(row); return newObj; }) : [];
+        ///.
+        /// </summary>
+        internal static string newArrayAssignmentFromObjectES5 {
+            get {
+                return ResourceManager.GetString("newArrayAssignmentFromObjectES5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt; PropertyComment &gt;&gt;
+        ///this.&lt;&lt; propertyName &gt;&gt; = new &lt;&lt; type &gt;&gt;(&lt;&lt; parameters &gt;&gt;);
+        ///.
+        /// </summary>
+        internal static string newAssignment {
+            get {
+                return ResourceManager.GetString("newAssignment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt; PropertyComment &gt;&gt;
+        ///this.&lt;&lt; propertyName &gt;&gt; = new &lt;&lt; type &gt;&gt;();
+        ///this.&lt;&lt; propertyName &gt;&gt;._loadFromObject(dataObject.&lt;&lt; propertyName &gt;&gt;);
+        ///.
+        /// </summary>
+        internal static string newAssignmentFromObject {
+            get {
+                return ResourceManager.GetString("newAssignmentFromObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to     * @param { &lt;&lt; type &gt;&gt; } &lt;&lt; name &gt;&gt;.
+        /// </summary>
+        internal static string parameterTypeComment {
+            get {
+                return ResourceManager.GetString("parameterTypeComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /**
+        ///    * @type &lt;&lt; type &gt;&gt;
+        ///*/.
+        /// </summary>
+        internal static string propertyComment {
+            get {
+                return ResourceManager.GetString("propertyComment", resourceCulture);
             }
         }
         
@@ -204,6 +345,18 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  /**
+        ///    * &lt;&lt; description &gt;&gt;
+        ///&lt;&lt; ParameterTypeComment &gt;&gt;
+        ///*/.
+        /// </summary>
+        internal static string requestContainerComment {
+            get {
+                return ResourceManager.GetString("requestContainerComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to var globalTokens = {};
         ////**
         /// * A very simple and lightweight cross browser polyfill for a JS promise.
@@ -229,9 +382,10 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to     &lt;&lt; method[comment] &gt;&gt;
-        ///    async &lt;&lt; method[name] &gt;&gt; (&lt;&lt; method[parameters] &gt;&gt;){
-        ///        return this._&lt;&lt; method[name] &gt;&gt;.ExecuteRequest({&lt;&lt; method[requestObj] &gt;&gt;}, globalTokens);
+        ///   Looks up a localized string similar to     &lt;&lt; RunRequestMethodComment &gt;&gt;
+        ///    &lt;&lt; name &gt;&gt; (&lt;&lt; parameters &gt;&gt;)
+        ///    {
+        ///        return this._&lt;&lt; name &gt;&gt;.ExecuteRequest({&lt;&lt; requestObj &gt;&gt;});
         ///    }
         ///.
         /// </summary>
@@ -242,15 +396,39 @@ namespace CodeBuilder.JS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to     &lt;&lt; method[comment] &gt;&gt;
-        ///    this.&lt;&lt; method[name] &gt;&gt; = function(&lt;&lt; method[parameters] &gt;&gt;){
-        ///        return this._&lt;&lt; method[name] &gt;&gt;.ExecuteRequest({&lt;&lt; method[requestObj] &gt;&gt;}, globalTokens);
-        ///    };
+        ///   Looks up a localized string similar to  /**
+        ///    * &lt;&lt; description &gt;&gt;
+        ///&lt;&lt; ParameterTypeComment &gt;&gt;
+        ///    * @return {&lt;&lt; resultType &gt;&gt;}
+        ///*/.
+        /// </summary>
+        internal static string runRequestMethodComment {
+            get {
+                return ResourceManager.GetString("runRequestMethodComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to     &lt;&lt; RunRequestMethodComment &gt;&gt;
+        ///    this.&lt;&lt; name &gt;&gt; (&lt;&lt; parameters &gt;&gt;)
+        ///    {
+        ///        return this._&lt;&lt; name &gt;&gt;.ExecuteRequest({&lt;&lt; requestObj &gt;&gt;});
+        ///    }
         ///.
         /// </summary>
         internal static string runRequestMethodFunction {
             get {
                 return ResourceManager.GetString("runRequestMethodFunction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to this._&lt;&lt; name &gt;&gt; = new request(this.baseUrl,&quot;&lt;&lt; url &gt;&gt;&quot;,&quot;&lt;&lt; method &gt;&gt;&quot;,&lt;&lt; parameterSourceBindings &gt;&gt;, &lt;&lt; resultType &gt;&gt;);
+        ///.
+        /// </summary>
+        internal static string runRequestProperty {
+            get {
+                return ResourceManager.GetString("runRequestProperty", resourceCulture);
             }
         }
     }
