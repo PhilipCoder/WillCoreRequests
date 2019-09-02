@@ -293,7 +293,7 @@ app.ConfigureWillCoreReflection(conf =>
 Fields that can be changed:
 
 Property | Type | Description
----- | ---- | ---- | ---- |
+---- | ---- | ---- |
 ControllerType | Type |  The type of controller to extract
 MaxRecursiveDepth | int |  Sets the maximum level of child result classes the recursion will allow
 ClassIncludeFilterAttributes | List\<Type> |  Only classes with attributes in this array will be returned. Can be empty to return all classes.
